@@ -1,4 +1,4 @@
-import { poppins } from "@/modules/core"
+import { poppins, Footer } from "@/modules/core"
 import "./globals.css"
 import { Metadata } from "next"
 
@@ -18,9 +18,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${poppins.className} bg-zinc-950 dark:bg-zinc-50 antialiased`}
+        className={`${poppins.className} bg-zinc-50 dark:bg-zinc-950 antialiased`}
       >
         {children}
+        <Footer />
       </body>
     </html>
   )
