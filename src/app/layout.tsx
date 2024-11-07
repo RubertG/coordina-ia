@@ -1,4 +1,4 @@
-import { poppins } from "@/modules/core/fonts/poppins"
+import { poppins } from "@/modules/core"
 import "./globals.css"
 import { Metadata } from "next"
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${poppins.className} antialiased`}
+        className={`${poppins.className} bg-zinc-950 antialiased`}
       >
         {children}
       </body>
