@@ -18,7 +18,7 @@ export const Footer = () => {
           className="hover:underline lg:transition-colors lg:hover:text-zinc-700"
           href="https://github.com/HAndres8"
         >
-          &nbsp;Andres hernandez&nbsp;
+          &nbsp;Andres Hernandez&nbsp;
         </Link>
       </p>
     </footer>
