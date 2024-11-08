@@ -18,9 +18,9 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${poppins.className} bg-zinc-50 dark:bg-zinc-950 antialiased`}>
-        <Nav />
-        <div className="min-h-screen grid grid-rows-[1fr_auto] max-w-7xl mx-auto px-4">
-          <main>
+        <div className="min-h-screen grid grid-rows-[auto_1fr_auto]">
+          <Nav />
+          <main className="w-full max-w-7xl mx-auto px-4 mt-5">
             {children}
           </main>
           <Footer />
