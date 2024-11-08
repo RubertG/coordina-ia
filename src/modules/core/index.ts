@@ -4,3 +4,5 @@ export * from "./lib/utils"
 
 export * from "./components/footer"
 export * from "./components/nav"
+
+export * from "./ui/button"
