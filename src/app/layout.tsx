@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={`${poppins.className} bg-zinc-50 dark:bg-zinc-950 antialiased`}>
         <div className="min-h-screen grid grid-rows-[auto_1fr_auto]">
           <Nav />
-          <main className="w-full max-w-7xl mx-auto px-4 mt-5">
+          <main className="w-full max-w-7xl mx-auto px-4 my-6">
             {children}
           </main>
           <Footer />
