@@ -4,41 +4,34 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 import { createClientServer as createClient } from '@/modules/core'
+import { registerSchemaType } from '@/modules/auth'
 
-export async function login(formData: FormData) {
+export async function login(data: registerSchemaType) {
   const supabase = await createClient()
-
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string
-  }
-
   const { error } = await supabase.auth.signInWithPassword(data)
 
   console.log(error)
 
   if (error) {
-    redirect('/login?error=Error al iniciar sesi%C3%B3n')
+    return {
+      error: "Error al iniciar sesión"
+    }
   }
 
   revalidatePath('/', 'layout')
   redirect('/')
 }
 
-export async function signup(formData: FormData) {
+export async function signup(data: registerSchemaType) {
   const supabase = await createClient()
-
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string
-  }
-
   const { error } = await supabase.auth.signUp(data)
 
   console.log(error)
-  
+
   if (error) {
-    redirect('/login?error=Error al crear el usuario')
+    return {
+      error: "Error al iniciar sesión"
+    }
   }
 
   revalidatePath('/', 'layout')
