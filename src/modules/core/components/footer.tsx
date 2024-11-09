@@ -8,7 +8,7 @@ export const Footer = () => {
         <Link
           target="_blank"
           className="hover:underline lg:transition-colors lg:hover:text-zinc-700"
-          href="https://github.com/rubertg12"
+          href="https://github.com/RubertG"
         >
           Rubert Gonzalez
         </Link>
