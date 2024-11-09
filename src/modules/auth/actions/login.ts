@@ -18,7 +18,7 @@ export async function login(data: registerSchemaType) {
     }
   }
 
-  revalidatePath('/', 'layout')
+  revalidatePath('/')
   redirect('/')
 }
 
@@ -39,6 +39,6 @@ export async function signup(data: registerSchemaType) {
     console.log(res)
   }
 
-  revalidatePath('/', 'layout')
+  revalidatePath('/')
   redirect('/')
 }
