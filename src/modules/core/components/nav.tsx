@@ -1,11 +1,7 @@
 import Link from "next/link"
+import { NavItem, NavLink } from "@/modules/core"
 
-interface Link {
-  href: string
-  label: string
-}
-
-const links: Link[] = [
+const links: NavLink[] = [
   {
     href: "/",
     label: "Proyectos"
@@ -32,14 +28,7 @@ export const Nav = () => {
         <ul className="flex items-center">
           {
             links.map(({ href, label }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className="block py-2 px-3 lg:transition-colors lg:hover:text-primary text-zinc-900"
-                >
-                  {label}
-                </Link>
-              </li>
+              <NavItem key={href} href={href} label={label} />
             ))
           }
         </ul>
