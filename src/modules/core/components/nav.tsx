@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { NavItem, NavLink } from "@/modules/core"
+import { Button, LoginButton, NavItem, NavLink } from "@/modules/core"
+import { Suspense } from "react"
 
 const links: NavLink[] = [
   {
@@ -13,8 +14,6 @@ const links: NavLink[] = [
 ]
 
 export const Nav = () => {
-  // TODO: Implementar login y logout
-
   return (
     <nav className="bg-background shadow-lg shadow-zinc-200/30">
       <nav className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
@@ -31,6 +30,11 @@ export const Nav = () => {
               <NavItem key={href} href={href} label={label} />
             ))
           }
+          <li className="ml-3">
+            <Suspense fallback={<Button variant="outline">Cargando...</Button>}>
+              <LoginButton />
+            </Suspense>
+          </li>
         </ul>
       </nav>
     </nav>
