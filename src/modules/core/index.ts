@@ -11,6 +11,7 @@ export * from "./components/footer"
 export * from "./components/nav"
 export * from "./components/submit-button"
 export * from "./components/nav-item"
+export * from "./components/login-button"
 
 export * from "./ui/button"
 export * from "./ui/input"
