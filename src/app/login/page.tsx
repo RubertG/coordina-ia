@@ -1,5 +1,4 @@
-import { SearchParams } from "@/modules/core"
-import { use } from "react"
+import { createClientServer, SearchParams } from "@/modules/core"
 
 import {
   Card,
@@ -12,13 +11,21 @@ import {
   TabsTrigger
 } from "@/modules/core"
 import { RegisterForm, SiginForm } from "@/modules/auth"
+import { redirect } from "next/navigation"
 
 interface Props {
   searchParams: SearchParams
 }
 
-export default function LoginPage(props: Props) {
-  const { error } = use(props.searchParams)
+export default async function LoginPage(props: Props) {
+  const supabase = await createClientServer()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (user) {
+    redirect('/')
+  }
+
+  const { error } = await props.searchParams
 
   return (
     <section className="flex flex-col items-center gap-5 justify-center">
