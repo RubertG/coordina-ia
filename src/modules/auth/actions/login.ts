@@ -24,7 +24,7 @@ export async function login(data: registerSchemaType) {
 
 export async function signup(data: registerSchemaType) {
   const supabase = await createClient()
-  const { error } = await supabase.auth.signUp(data)
+  const { error, data: { user } } = await supabase.auth.signUp(data)
 
   console.log(error)
 
@@ -32,6 +32,11 @@ export async function signup(data: registerSchemaType) {
     return {
       error: "Error al iniciar sesión"
     }
+  }
+
+  if (user) {
+    const res = await supabase.from('Usuario').insert([{ id: user.id, email: user.email }])
+    console.log(res)
   }
 
   revalidatePath('/', 'layout')
