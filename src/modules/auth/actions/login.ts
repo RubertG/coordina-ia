@@ -35,7 +35,7 @@ export async function signup(data: registerSchemaType) {
   }
 
   if (user) {
-    const res = await supabase.from('Usuario').insert([{ id: user.id, email: user.email }])
+    const res = await supabase.from("Usuario").insert({ id: user.id, email: user.email || "" })
     console.log(res)
   }
 
