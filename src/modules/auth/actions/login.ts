@@ -8,7 +8,7 @@ import { registerSchemaType } from '@/modules/auth'
 
 export async function login(data: registerSchemaType) {
   const supabase = await createClient()
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { error, data: { user } } = await supabase.auth.signInWithPassword(data)
 
   console.log(error)
 
@@ -16,6 +16,10 @@ export async function login(data: registerSchemaType) {
     return {
       error: "Error al iniciar sesión"
     }
+  }
+
+  if (user) {
+    await supabase.from('Usuario').insert([{ id: user.id, email: user.email }])
   }
 
   revalidatePath('/', 'layout')
