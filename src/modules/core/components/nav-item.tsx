@@ -12,8 +12,6 @@ export const NavItem = ({
   const pathname = usePathname()
   const isActive = href === pathname
 
-  console.log({ href, pathname, isActive })
-
   return (
     <li key={href}>
       <Link
