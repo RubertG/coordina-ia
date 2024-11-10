@@ -10,7 +10,7 @@ export default async function Home() {
         Tus proyectos
       </h1>
       {
-        error ? (
+        error || !data ? (
           <p className="text-center text-zinc-800 mt-10 text-sm">{error} :(</p>
         ) : (
           <ProjectsContainer className="mt-8">
