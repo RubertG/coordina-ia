@@ -3,7 +3,7 @@ interface Props {
   children: React.ReactNode
 }
 
-export const ProjectContainer = ({
+export const ProjectsContainer = ({
   children, className
 }: Props) => {
   return (

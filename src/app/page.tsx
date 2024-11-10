@@ -1,4 +1,4 @@
-import { ProjectContainer, ProjectsService } from "@/modules/projects"
+import { ProjectsContainer, ProjectsService } from "@/modules/projects"
 import { ProjectCard } from "@/modules/projects"
 
 export default async function Home() {
@@ -13,7 +13,7 @@ export default async function Home() {
         error ? (
           <p className="text-center text-zinc-800 mt-10 text-sm">{error} :(</p>
         ) : (
-          <ProjectContainer className="mt-8">
+          <ProjectsContainer className="mt-8">
             {
               data.map((project) => (
                 <li key={project.id}>
@@ -21,7 +21,7 @@ export default async function Home() {
                 </li>
               ))
             }
-          </ProjectContainer>
+          </ProjectsContainer>
         )
       }
     </>

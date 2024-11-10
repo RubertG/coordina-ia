@@ -1,4 +1,4 @@
 export * from "./services/projects.service"
 
 export * from "./components/project-card"
-export * from "./components/project-container"
+export * from "./components/projects-container"
