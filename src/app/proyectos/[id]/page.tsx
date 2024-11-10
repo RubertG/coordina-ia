@@ -31,7 +31,7 @@ async function ProjectPage(props: Props) {
         <h2 className="text-lg font-bold">
           Tecnologías
         </h2>
-        <ul className="list-disc ml-10 mt-2 max-h-[150px]">
+        <ul className="list-disc ml-10 mt-2">
           {
             tecnologias.split(',').map((tecnologia) => (
               <li
