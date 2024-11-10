@@ -29,7 +29,7 @@ export default async function LoginPage(props: Props) {
 
   return (
     <section className="flex flex-col items-center gap-5 justify-center">
-      <Tabs defaultValue="register" className="w-[400px]">
+      <Tabs defaultValue="register" className="w-full max-w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="register">Registrar</TabsTrigger>
           <TabsTrigger value="sigin">Ingresar</TabsTrigger>
