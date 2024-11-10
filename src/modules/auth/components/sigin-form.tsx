@@ -69,7 +69,7 @@ export const SiginForm = () => {
           />
 
           <footer>
-            <SubmitButton text="Iniciar sesión" textLoading="Iniciando sesión" isLoading={isLoading} />
+            <SubmitButton className="w-full mt-2" text="Iniciar sesión" textLoading="Iniciando sesión" isLoading={isLoading} />
           </footer>
         </form>
       </Form>

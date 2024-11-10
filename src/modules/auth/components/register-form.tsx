@@ -70,7 +70,7 @@ export const RegisterForm = () => {
           />
 
           <footer>
-            <SubmitButton text="Crear cuenta" textLoading="Creando cuenta" isLoading={isLoading} />
+            <SubmitButton className="w-full mt-2" text="Crear cuenta" textLoading="Creando cuenta" isLoading={isLoading} />
           </footer>
         </form>
       </Form>
