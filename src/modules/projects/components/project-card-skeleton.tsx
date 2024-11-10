@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/modules/core"
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/modules/core"
 
 export const ProjectCardSkeleton = () => {
