@@ -1,16 +1,14 @@
 import { Button } from "@/modules/core"
 import { ProjectsService } from "@/modules/projects"
 
+type Params = Promise<{ id: string }>
+
 interface Props {
-  params: {
-    id: string
-  }
+  params: Params
 }
 
-async function ProjectPage({
-  params
-}: Props) {
-  const { id } = await params
+async function ProjectPage(props: Props) {
+  const { id } = await props.params
   const { data: projects, error } = await ProjectsService.getProject(id)
 
   if (error || !projects) return (
