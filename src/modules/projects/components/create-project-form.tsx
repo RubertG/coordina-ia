@@ -95,7 +95,7 @@ export const CreateProjectForm = ({
               )}
             />
 
-            <footer className='flex gap-3 !mt-6'>
+            <footer className='flex gap-3 flex-wrap !mt-6'>
               <SubmitButton
                 className="w-auto"
                 text="Guardar proyecto"
