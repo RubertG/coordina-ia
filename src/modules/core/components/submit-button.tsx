@@ -5,16 +5,18 @@ interface Props {
   isLoading: boolean
   text: string
   textLoading?: string
+  className?: string
 }
 
 export const SubmitButton = ({
   isLoading,
   text, 
-  textLoading
+  textLoading,
+  className
 }: Props) => {
   return (
     <Button
-      className="w-full mt-2"
+      className={`${className}`}
       type="submit"
       disabled={isLoading}
     >
