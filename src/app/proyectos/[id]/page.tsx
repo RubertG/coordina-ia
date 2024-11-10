@@ -33,9 +33,9 @@ async function ProjectPage(props: Props) {
         </h2>
         <ul className="list-disc ml-10 mt-2">
           {
-            tecnologias.split(',').map((tecnologia) => (
+            tecnologias.split(',').map((tecnologia, index) => (
               <li
-                key={tecnologia}
+                key={tecnologia + index}
               >
                 {tecnologia}
               </li>
