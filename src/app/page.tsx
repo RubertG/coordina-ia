@@ -1,7 +1,29 @@
-export default function Home() {
+import { ProjectContainer, ProjectsService } from "@/modules/projects"
+import { ProjectCard } from "@/modules/projects"
+
+export default async function Home() {
+  const { data, error } = await ProjectsService.getProjects()
+
   return (
-    <div>
-      <h1>Hola mundo! Somos Coordina IA</h1>
-    </div>
+    <>
+      <h1 className="text-3xl lg:text-4xl font-extrabold text-center text-primary">
+        Tus proyectos
+      </h1>
+      {
+        error ? (
+          <p className="text-center text-zinc-800 mt-10 text-sm">{error} :(</p>
+        ) : (
+          <ProjectContainer className="mt-8">
+            {
+              data.map((project) => (
+                <li key={project.id}>
+                  <ProjectCard project={project} />
+                </li>
+              ))
+            }
+          </ProjectContainer>
+        )
+      }
+    </>
   )
 }
