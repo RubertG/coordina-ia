@@ -1,5 +1,5 @@
 import { Button } from "@/modules/core"
-import { ProjectsService, Workers } from "@/modules/projects"
+import { DeleteProjectButton, ProjectsService, Workers } from "@/modules/projects"
 import { Suspense } from "react"
 
 type Params = Promise<{ id: string }>
@@ -61,9 +61,7 @@ async function ProjectPage(props: Props) {
         <Button>
           Editar proyecto
         </Button>
-        <Button variant="ghost">
-          Eliminar proyecto
-        </Button>
+        <DeleteProjectButton idProject={id} />
       </section>
     </>
   )
