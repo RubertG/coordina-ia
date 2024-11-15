@@ -22,7 +22,7 @@ export const WorkerCard = ({
                 </p>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-sm text-zinc-500 line-clamp-1">{worker.nombre}</p>
+                <p className="text-sm text-zinc-100 line-clamp-1">{worker.nombre}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
