@@ -14,6 +14,10 @@ const links: NavLink[] = [
   {
     href: "/crear-proyecto",
     label: "Crear proyecto"
+  },
+  {
+    href: "/trabajadores",
+    label: "Trabajadores"
   }
 ]
 
