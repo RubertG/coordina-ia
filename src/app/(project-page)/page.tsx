@@ -11,7 +11,7 @@ export default async function Home() {
       </h1>
       {
         error || !data ? (
-          <p className="text-center text-zinc-800 mt-10 text-sm">{error} :(</p>
+          <p className="text-center text-zinc-800 mt-8 text-sm">{error} :(</p>
         ) : (
           <ProjectsContainer className="mt-8">
             {

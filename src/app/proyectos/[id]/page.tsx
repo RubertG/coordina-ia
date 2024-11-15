@@ -25,7 +25,7 @@ async function ProjectPage(props: Props) {
       <h1 className="text-3xl lg:text-4xl font-extrabold text-center text-primary">
         {nombre}
       </h1>
-      <p className="mt-5 text-zinc-800">
+      <p className="mt-8 text-zinc-800">
         {descripcion}
       </p>
 

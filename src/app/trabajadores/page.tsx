@@ -13,11 +13,11 @@ export default async function TrabajadoresPage() {
 
       {
         error && (
-          <p className='text-center text-zinc-800 mt-10 text-sm'>{error}</p>
+          <p className='text-center text-zinc-800 mt-8 text-sm'>{error}</p>
         )
       }
 
-      <ul className='mt-10 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 lg:gap-3'>
+      <ul className='mt-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 lg:gap-3'>
         {
           workers.map((worker) => (
             <li key={worker.id}>
