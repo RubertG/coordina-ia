@@ -18,6 +18,8 @@ async function WorkerPage({
     <p className="text-center text-zinc-800 text-sm">{error} :(</p>
   )
 
+  const curriculum = worker.curriculum.split('\n')
+
   return (
     <>
       <h1 className="text-3xl lg:text-4xl font-extrabold text-center text-primary">
@@ -28,9 +30,18 @@ async function WorkerPage({
           <strong>ID:</strong> {id}
         </p>
         <h2 className="text-xl font-bold mt-4">
-          Curriculum:
+          Curriculum
         </h2>
-        <p className="mt-2" dangerouslySetInnerHTML={{ __html: worker.curriculum }} />
+        {
+          curriculum.map((item, index) => (
+            <p
+              className="mt-2 text-sm lg:text-base"
+              key={index}
+            >
+              {item}
+            </p>
+          ))
+        }
       </section>
     </>
   )
