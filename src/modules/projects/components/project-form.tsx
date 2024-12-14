@@ -1,15 +1,18 @@
+"use client"
+
 import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, SubmitButton, Textarea } from "@/modules/core"
-import { createProjectSchemaType } from "../types/types"
+import { ProjectCreationSchema } from "../types/types"
 import { UseFormReturn } from "react-hook-form"
 
 interface Props {
-  form: UseFormReturn<createProjectSchemaType>
+  form: UseFormReturn<ProjectCreationSchema>
   isLoading: boolean
-  handlesubmit: (data: createProjectSchemaType) => Promise<void>
+  handlesubmit: (data: ProjectCreationSchema) => Promise<void>
+  loadWorkers: () => void
 }
 
 const ProjectForm = ({
-  form, handlesubmit, isLoading
+  form, handlesubmit, isLoading, loadWorkers
 }: Props) => {
   return (
     <Form {...form}>
@@ -81,7 +84,11 @@ const ProjectForm = ({
             textLoading="Guardando proyecto"
             isLoading={isLoading}
           />
-          <Button variant="ghost" type='button'>
+          <Button
+            variant="ghost"
+            type="submit"
+            onClick={loadWorkers}
+          >
             Cargar mejores trabajadores
           </Button>
         </footer>
