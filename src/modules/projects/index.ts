@@ -8,6 +8,10 @@ export * from "./components/workers"
 export * from "./components/delete-project-button"
 export * from "./components/create-project-form"
 export * from "./components/project-form"
+export * from "./components/workers-modal"
+export * from "./components/worker-item"
+
+export * from "./reducers/workers-reducer"
 
 export * from "./schemas/create-project.schema"
 
