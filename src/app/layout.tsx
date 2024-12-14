@@ -1,4 +1,4 @@
-import { poppins, Footer, Nav } from "@/modules/core"
+import { poppins, Footer, Nav, Toaster } from "@/modules/core"
 import "./globals.css"
 import { Metadata } from "next"
 
@@ -25,6 +25,7 @@ export default function RootLayout({
           </main>
           <Footer />
         </div>
+        <Toaster />
       </body>
     </html>
   )
