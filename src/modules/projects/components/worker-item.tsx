@@ -1,25 +1,26 @@
 import clsx from 'clsx'
 
-import { SelectedWorker } from '../types/types'
+import { Worker } from '../types/types'
 
 interface Props {
   className?: string
-  worker: SelectedWorker
-  onClick: (workerId: string) => void
+  worker: Worker
+  isSelected: boolean
+  onClick: (worker: Worker) => void
 }
 
-export const WorkerItem = ({ className, worker, onClick }: Props) => {
+export const WorkerItem = ({ className, worker, onClick, isSelected }: Props) => {
   return (
     <li
       className={clsx(
         `flex cursor-pointer items-center justify-between border-b border-gray-200 p-2 last:border-b-0 lg:hover:bg-zinc-100 ${className}`,
         {
-          'bg-zinc-200': worker.isSelected,
+          'bg-zinc-200': isSelected,
         },
       )}
-      onClick={() => onClick(worker.id)}
+      onClick={() => onClick(worker)}
     >
-      <p className="text-zinc-700 ">{worker.name}</p>
+      <p className="text-zinc-700 text-sm">{worker.name}</p>
       <p>{worker.numberOfJobs}</p>
     </li>
   )
