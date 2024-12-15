@@ -30,18 +30,13 @@ export const workersReducer = (state: WorkersReducerState, action: ActionPayload
   }
 
   if (action.type === 'SELECT_WORKER') {
-    return {
-      ...state,
-      workers: state.workers.map((worker) => {
-        if (worker.id === action.payload) {
-          return {
-            ...worker,
-            isSelected: !worker.isSelected,
-          }
-        }
+    const index = state.selectedWorkers.findIndex((worker) => worker.id === action.payload.id)
 
-        return worker
-      }),
+    if (index === -1) {
+      return {
+        ...state,
+        selectedWorkers: [...state.selectedWorkers, action.payload],
+      }
     }
   }
 
