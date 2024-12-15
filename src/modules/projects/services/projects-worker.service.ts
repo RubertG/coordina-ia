@@ -1,8 +1,8 @@
 import { createClientServer, Database } from '@/modules/core'
 
-interface Response {
+export interface Response<T = Database['public']['Tables']['Trabajador']['Row'][]> {
   error: string | null
-  data: Database['public']['Tables']['Trabajador']['Row'][]
+  data: T
 }
 
 export class ProjectsWorkerService {
