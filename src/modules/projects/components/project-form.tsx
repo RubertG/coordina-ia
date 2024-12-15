@@ -1,8 +1,20 @@
-"use client"
+'use client'
 
-import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, SubmitButton, Textarea } from "@/modules/core"
-import { ProjectCreationSchema } from "../types/types"
-import { UseFormReturn } from "react-hook-form"
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  SubmitButton,
+  Textarea,
+} from '@/modules/core'
+import { UseFormReturn } from 'react-hook-form'
+
+import { ProjectCreationSchema } from '../types/types'
 
 interface Props {
   form: UseFormReturn<ProjectCreationSchema>
@@ -11,9 +23,7 @@ interface Props {
   loadWorkers: () => void
 }
 
-const ProjectForm = ({
-  form, handlesubmit, isLoading, loadWorkers
-}: Props) => {
+const ProjectForm = ({ form, handlesubmit, isLoading, loadWorkers }: Props) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handlesubmit)} className="space-y-3">
@@ -70,25 +80,21 @@ const ProjectForm = ({
             <FormItem>
               <FormLabel>Cantidad máxima de trabajadores</FormLabel>
               <FormControl>
-                <Input placeholder="Ej: 5" type='number' {...field} />
+                <Input placeholder="Ej: 5" type="number" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <footer className='flex gap-3 flex-wrap !mt-6'>
+        <footer className="!mt-6 flex flex-wrap gap-3">
           <SubmitButton
             className="w-auto"
             text="Guardar proyecto"
             textLoading="Guardando proyecto"
             isLoading={isLoading}
           />
-          <Button
-            variant="ghost"
-            type="submit"
-            onClick={loadWorkers}
-          >
+          <Button variant="ghost" type="submit" onClick={loadWorkers}>
             Cargar mejores trabajadores
           </Button>
         </footer>

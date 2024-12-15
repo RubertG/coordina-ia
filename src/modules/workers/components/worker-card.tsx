@@ -1,28 +1,22 @@
-import { Card, CardHeader, Database, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/modules/core"
-import Link from "next/link"
+import { Card, CardHeader, Database, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/modules/core'
+import Link from 'next/link'
 
 interface Props {
-  worker: Database["public"]["Tables"]["Trabajador"]["Row"]
+  worker: Database['public']['Tables']['Trabajador']['Row']
 }
 
-export const WorkerCard = ({
-  worker
-}: Props) => {
+export const WorkerCard = ({ worker }: Props) => {
   return (
     <Link href={`/trabajadores/${worker.id}`}>
-      <Card className="lg:hover:border-primary lg:transition-colors">
+      <Card className="lg:transition-colors lg:hover:border-primary">
         <CardHeader>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <p
-                  className="text-sm text-zinc-500 line-clamp-1"
-                >
-                  {worker.nombre}
-                </p>
+                <p className="line-clamp-1 text-sm text-zinc-500">{worker.nombre}</p>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-sm text-zinc-100 line-clamp-1">{worker.nombre}</p>
+                <p className="line-clamp-1 text-sm text-zinc-100">{worker.nombre}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

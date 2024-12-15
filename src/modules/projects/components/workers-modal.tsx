@@ -1,5 +1,3 @@
-import { ReactNode } from "react"
-import { SelectedWorker } from "../types/types"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -7,8 +5,11 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from "@/modules/core"
+  AlertDialogTitle,
+} from '@/modules/core'
+import { ReactNode } from 'react'
+
+import { SelectedWorker } from '../types/types'
 
 interface Props {
   className?: string
@@ -22,44 +23,28 @@ interface Props {
   children: (workers: SelectedWorker[]) => ReactNode
 }
 
-const WorkersModal = ({
-  className,
-  loading,
-  workers,
-  error,
-  onLoading,
-  children,
-  setOpen,
-  open
-}: Props) => {
+const WorkersModal = ({ className, loading, workers, error, onLoading, children, setOpen, open }: Props) => {
   return (
-    <AlertDialog
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Selecciona los trabajadores que quieres</AlertDialogTitle>
           <AlertDialogDescription>
-            Puedes elegir a los trabajadores que quieras para tu proyecto. Esta recomendación es hecha por IA. Los trabajadores están compuestos por su <strong>nombre</strong> y la <strong>cantidad de trabajos</strong> que han realizado.
+            Puedes elegir a los trabajadores que quieras para tu proyecto. Esta recomendación es hecha por IA. Los
+            trabajadores están compuestos por su <strong>nombre</strong> y la <strong>cantidad de trabajos</strong> que
+            han realizado.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <div className={`grid max-h-96 overflow-y-auto ${className}`}>
           {loading && onLoading?.()}
 
-          {
-            error && (
-              <p>{error}</p>
-            )
-          }
-          {(!loading && workers.length !== 0 && !error) && children(workers)}
+          {error && <p>{error}</p>}
+          {!loading && workers.length !== 0 && !error && children(workers)}
         </div>
 
         <AlertDialogFooter>
-          <AlertDialogAction>
-            Aceptar
-          </AlertDialogAction>
+          <AlertDialogAction>Aceptar</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

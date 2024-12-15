@@ -1,38 +1,41 @@
-import { createClientServer, Database } from "@/modules/core"
+import { createClientServer, Database } from '@/modules/core'
 
 interface Response {
   error: string | null
-  data: Database["public"]["Tables"]["Trabajador"]["Row"][]
+  data: Database['public']['Tables']['Trabajador']['Row'][]
 }
 
 export class ProjectsWorkerService {
-
   static async getProjectsMembers(idProject: string): Promise<Response> {
     const supabase = await createClientServer()
     const { data, error: workersError } = await supabase
-      .from("Proyecto_Trabajador")
-      .select("id_Trabajador")
-      .eq("id_Proyecto", idProject)
-      
-    if (workersError || !data) return {
-      error: "Error al obtener los miembros del proyecto",
-      data: []
-    }
+      .from('Proyecto_Trabajador')
+      .select('id_Trabajador')
+      .eq('id_Proyecto', idProject)
+
+    if (workersError || !data)
+      return {
+        error: 'Error al obtener los miembros del proyecto',
+        data: [],
+      }
 
     const { data: users, error: usersError } = await supabase
-      .from("Trabajador")
-      .select("*")
-      .in("id", data.map(({ id_Trabajador }) => id_Trabajador))
-      
-    if (usersError || !users) return {
-      error: "Error al obtener los miembros del proyecto",
-      data: []
-    }
+      .from('Trabajador')
+      .select('*')
+      .in(
+        'id',
+        data.map(({ id_Trabajador }) => id_Trabajador),
+      )
+
+    if (usersError || !users)
+      return {
+        error: 'Error al obtener los miembros del proyecto',
+        data: [],
+      }
 
     return {
       error: null,
-      data: users
+      data: users,
     }
   }
-
 }

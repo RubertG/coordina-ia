@@ -1,21 +1,13 @@
-"use client"
+'use client'
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Input,
-  SubmitButton
-} from "@/modules/core"
-import { loginSchema } from "../schemas/register"
-import { login, registerSchemaType } from "@/modules/auth"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { login, registerSchemaType } from '@/modules/auth'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, SubmitButton } from '@/modules/core'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+
+import { loginSchema } from '../schemas/register'
 
 export const SiginForm = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -23,9 +15,9 @@ export const SiginForm = () => {
   const form = useForm<registerSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: ""
-    }
+      email: '',
+      password: '',
+    },
   })
 
   const handlesubmit = async (data: registerSchemaType) => {
@@ -69,7 +61,12 @@ export const SiginForm = () => {
           />
 
           <footer>
-            <SubmitButton className="w-full mt-2" text="Iniciar sesión" textLoading="Iniciando sesión" isLoading={isLoading} />
+            <SubmitButton
+              className="mt-2 w-full"
+              text="Iniciar sesión"
+              textLoading="Iniciando sesión"
+              isLoading={isLoading}
+            />
           </footer>
         </form>
       </Form>

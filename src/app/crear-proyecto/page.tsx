@@ -1,11 +1,9 @@
-import { CreateProjectForm } from "@/modules/projects"
+import { CreateProjectForm } from '@/modules/projects'
 
 function CreateProjectPage() {
   return (
     <>
-      <h1 className="text-3xl lg:text-4xl font-extrabold text-center text-primary">
-        Crear proyecto
-      </h1>
+      <h1 className="text-center text-3xl font-extrabold text-primary lg:text-4xl">Crear proyecto</h1>
       <CreateProjectForm className="mt-8" />
     </>
   )

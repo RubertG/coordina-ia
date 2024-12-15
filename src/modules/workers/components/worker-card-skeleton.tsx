@@ -1,12 +1,10 @@
-import { Card, CardHeader, Skeleton } from "@/modules/core"
+import { Card, CardHeader, Skeleton } from '@/modules/core'
 
 export const WorkerCardSkeleton = () => {
   return (
-    <Card className="lg:hover:border-primary lg:transition-colors">
+    <Card className="lg:transition-colors lg:hover:border-primary">
       <CardHeader>
-        <Skeleton
-          className="w-full h-[21px] line-clamp-1"
-        />
+        <Skeleton className="line-clamp-1 h-[21px] w-full" />
       </CardHeader>
     </Card>
   )

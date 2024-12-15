@@ -1,8 +1,8 @@
-import Link from "next/link"
+import Link from 'next/link'
 
 export const Footer = () => {
   return (
-    <footer className="mx-auto px-4 max-w-7xl my-4 text-sm">
+    <footer className="mx-auto my-4 max-w-7xl px-4 text-sm">
       <p className="text-center text-sm text-zinc-500">
         Diseñado por&nbsp;
         <Link

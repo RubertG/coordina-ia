@@ -1,56 +1,69 @@
-import { createClientServer, Database } from "../../core"
+import { createClientServer, Database } from '../../core'
 
 interface Response {
   error: string | null
-  data: Database["public"]["Tables"]["Proyecto"]["Row"][] | null
+  data: Database['public']['Tables']['Proyecto']['Row'][] | null
 }
 
 export class ProjectsService {
   static async getProjects(): Promise<Response> {
     const supabase = await createClientServer()
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser()
 
-    if (userError) return {
-      error: "Error al iniciar sesión",
-      data: []
-    }
+    if (userError)
+      return {
+        error: 'Error al iniciar sesión',
+        data: [],
+      }
 
-    const { data, error: projectsError } = await supabase.from("Proyecto").select("*").eq("usuario_id", user?.id || "")
+    const { data, error: projectsError } = await supabase
+      .from('Proyecto')
+      .select('*')
+      .eq('usuario_id', user?.id || '')
 
-    if (projectsError) return {
-      error: "Error al obtener los proyectos",
-      data: []
-    }
+    if (projectsError)
+      return {
+        error: 'Error al obtener los proyectos',
+        data: [],
+      }
 
     return {
       error: null,
-      data
+      data,
     }
   }
 
   static async getProject(id: string): Promise<Response> {
     const supabase = await createClientServer()
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser()
 
-    if (userError) return {
-      error: "Error al iniciar sesión",
-      data: null
-    }
+    if (userError)
+      return {
+        error: 'Error al iniciar sesión',
+        data: null,
+      }
 
     const { data, error: projectsError } = await supabase
-      .from("Proyecto")
-      .select("*")
-      .eq("id", id)
-      .eq("usuario_id", user?.id || "")
+      .from('Proyecto')
+      .select('*')
+      .eq('id', id)
+      .eq('usuario_id', user?.id || '')
 
-    if (projectsError) return {
-      error: "Error al obtener el proyecto",
-      data: null
-    }
+    if (projectsError)
+      return {
+        error: 'Error al obtener el proyecto',
+        data: null,
+      }
 
     return {
       error: null,
-      data
+      data,
     }
   }
 }

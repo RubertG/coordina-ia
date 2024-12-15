@@ -1,5 +1,6 @@
-import { z } from "zod"
-import { createProjectSchema } from "../schemas/create-project.schema"
+import { z } from 'zod'
+
+import { createProjectSchema } from '../schemas/create-project.schema'
 
 export type ProjectCreationSchema = z.infer<typeof createProjectSchema>
 
@@ -21,8 +22,8 @@ export interface WorkersReducerState {
 }
 
 export type ActionPayloadWorkersReducer =
-  { type: "SELECT_WORKER"; payload: SelectedWorker["id"] } |
-  { type: "REMOVE_WORKER"; payload: SelectedWorker["id"] } |
-  { type: "SET_LOADING"; payload: boolean } |
-  { type: "SET_ERROR"; payload: string } |
-  { type: "SET_WORKERS"; payload: SelectedWorker[] }
+  | { type: 'SELECT_WORKER'; payload: SelectedWorker['id'] }
+  | { type: 'REMOVE_WORKER'; payload: SelectedWorker['id'] }
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'SET_ERROR'; payload: string }
+  | { type: 'SET_WORKERS'; payload: SelectedWorker[] }
