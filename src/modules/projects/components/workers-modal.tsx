@@ -9,18 +9,18 @@ import {
 } from '@/modules/core'
 import { ReactNode } from 'react'
 
-import { SelectedWorker } from '../types/types'
+import { Worker } from '../types/types'
 
 interface Props {
   className?: string
   loading?: boolean
-  workers: SelectedWorker[]
+  workers: Worker[]
   error?: string
   open: boolean
   setOpen: (open: boolean) => void
 
   onLoading?: () => ReactNode
-  children: (workers: SelectedWorker[]) => ReactNode
+  children: (workers: Worker[]) => ReactNode
 }
 
 const WorkersModal = ({ className, loading, workers, error, onLoading, children, setOpen, open }: Props) => {
