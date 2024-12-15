@@ -37,6 +37,11 @@ export const workersReducer = (state: WorkersReducerState, action: ActionPayload
         ...state,
         selectedWorkers: [...state.selectedWorkers, action.payload],
       }
+    } else {
+      return {
+        ...state,
+        selectedWorkers: state.selectedWorkers.filter((worker) => worker.id !== action.payload.id),
+      }
     }
   }
 
