@@ -6,6 +6,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+textarea {
+	resize: none;
+	field-sizing: content;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
