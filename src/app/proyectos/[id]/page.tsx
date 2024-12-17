@@ -1,5 +1,5 @@
 import { Button } from '@/modules/core'
-import { DeleteProjectButton, ProjectsService, Workers } from '@/modules/projects'
+import { DeleteProjectButton, getProject, Workers } from '@/modules/projects'
 import { Suspense } from 'react'
 
 type Params = Promise<{ id: string }>
@@ -10,7 +10,7 @@ interface Props {
 
 async function ProjectPage(props: Props) {
   const { id } = await props.params
-  const { data: projects, error } = await ProjectsService.getProject(id)
+  const { data: projects, error } = await getProject(id)
 
   if (error || !projects)
     return (
@@ -22,21 +22,23 @@ async function ProjectPage(props: Props) {
   const { nombre, descripcion, integrantes, tecnologias } = projects[0]
 
   return (
-    <>
+    <div className="mx-auto max-w-4xl">
       <h1 className="text-center text-3xl font-extrabold text-primary lg:text-4xl">{nombre}</h1>
-      <p className="mt-8 text-zinc-800">{descripcion}</p>
+      <p className="mt-8 whitespace-pre-line">{descripcion}</p>
 
       <section className="mt-5 flex flex-wrap gap-5 md:gap-10">
         <article className="text-zinc-800">
-          <h2 className="text-lg font-bold">Tecnologías</h2>
+          <h2 className="font-bold">Tecnologías</h2>
           <ul className="ml-10 mt-2 list-disc">
             {tecnologias.split(',').map((tecnologia, index) => (
-              <li key={tecnologia + index}>{tecnologia}</li>
+              <li className="capitalize" key={tecnologia + index}>
+                {tecnologia}
+              </li>
             ))}
           </ul>
         </article>
         <article className="text-zinc-800">
-          <h2 className="text-lg font-bold">Integrantes</h2>
+          <h2 className="font-bold">Integrantes</h2>
           <p className="mt-2">{integrantes} trabajadores en el proyecto</p>
           <Suspense>
             <Workers idProject={id} />
@@ -48,7 +50,7 @@ async function ProjectPage(props: Props) {
         <Button>Editar proyecto</Button>
         <DeleteProjectButton idProject={id} />
       </section>
-    </>
+    </div>
   )
 }
 

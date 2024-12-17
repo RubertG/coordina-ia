@@ -11,22 +11,38 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/modules/core'
-import React from 'react'
+import { deleteProject } from '@/modules/projects'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 interface Props {
   idProject: string
 }
 
 export const DeleteProjectButton = ({ idProject }: Props) => {
-  const handleDelete = () => {
-    console.log(idProject)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  const handleDelete = async () => {
+    setLoading(true)
+    const { error } = await deleteProject(idProject)
+
+    if (error) {
+      toast.error('Ocurrió un error al eliminar el proyecto')
+      setLoading(false)
+    } else {
+      toast.success('Proyecto eliminado correctamente')
+      setLoading(false)
+      router.push('/')
+    }
   }
 
   return (
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="ghost">Eliminar proyecto</Button>
+          <Button variant="ghost">{loading ? 'Eliminando proyecto...' : 'Eliminar proyecto'}</Button>
         </DialogTrigger>
 
         <DialogContent className="sm:max-w-md">

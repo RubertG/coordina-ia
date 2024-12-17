@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader } from '@/modules/core'
 import {
+  createProject,
   createProjectSchema,
   getRecommendedWorkers,
   ProjectCreationSchema,
@@ -13,8 +14,10 @@ import {
 } from '@/modules/projects'
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
+import { useRouter } from 'next/navigation'
 import { useReducer, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import WorkersModal from './workers-modal'
 
@@ -38,6 +41,7 @@ export const CreateProjectForm = ({ className }: Props) => {
     technologies: '',
   })
   const [open, setOpen] = useState(false)
+  const router = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)
   const form = useForm<ProjectCreationSchema>({
@@ -55,9 +59,35 @@ export const CreateProjectForm = ({ className }: Props) => {
   }
 
   const handlesubmit = async (data: ProjectCreationSchema) => {
+    if (state.selectedWorkers.length === 0) return
+
+    if (state.selectedWorkers.length > parseInt(data.maxWorkers)) {
+      toast.error('No puedes seleccionar más trabajadores de los que has indicado')
+
+      return
+    }
+
     setIsLoading(true)
-    console.log(data)
-    setTimeout(() => setIsLoading(false), 2000)
+    const { error, data: id } = await createProject(
+      {
+        descripcion: data.description,
+        nombre: data.name,
+        tecnologias: data.technologies,
+        integrantes: state.selectedWorkers.length,
+      },
+      state.selectedWorkers,
+    )
+
+    if (error || !id) {
+      toast.error(error)
+      setIsLoading(false)
+
+      return
+    }
+
+    toast.success('Proyecto creado correctamente')
+    setIsLoading(false)
+    router.push(`/proyectos/${id}`)
   }
 
   const handleSelectWorker = (worker: Worker) => {
@@ -130,8 +160,13 @@ export const CreateProjectForm = ({ className }: Props) => {
         setOpen={handleOpenModal}
         workers={state.workers}
         loading={state.loading}
-        onLoading={() => <p className="text-sm">Cargando...</p>}
         error={state.error}
+        onLoading={() => (
+          <p className="text-sm text-zinc-700">
+            La busqueda de trabajadores recomendados puede durar más o menos 30 segundos cargando...
+          </p>
+        )}
+        onError={() => <p className="text-sm text-red-500">{state.error}</p>}
       >
         {(workers) => (
           <ul>

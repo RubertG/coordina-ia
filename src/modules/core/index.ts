@@ -5,8 +5,8 @@ export * from './lib/supabase/client'
 export * from './lib/supabase/server'
 export * from './lib/supabase/middleware'
 
-export * from './types/types'
-export * from './types/database'
+export type * from './types/types'
+export type * from './types/database'
 
 export * from './components/footer'
 export * from './components/nav'

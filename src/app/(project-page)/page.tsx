@@ -1,8 +1,8 @@
-import { ProjectsContainer, ProjectsService } from '@/modules/projects'
+import { getProjects, ProjectsContainer } from '@/modules/projects'
 import { ProjectCard } from '@/modules/projects'
 
 export default async function Home() {
-  const { data, error } = await ProjectsService.getProjects()
+  const { data, error } = await getProjects()
 
   return (
     <>
