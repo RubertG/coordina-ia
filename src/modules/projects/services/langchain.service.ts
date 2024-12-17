@@ -18,7 +18,8 @@ export async function LangChainService() {
    technologies. You will receive a data structure that has employee information such as id, curriculum and name.`;
 
    const humanTemplate = `According to the following list of workers: {workers} , analyze each curriculum and choose
-   the {cant} best members who can form a development team that has the following description: {desc}`;
+   the {cant} best members who can form a development team that has the following description: {desc}. Show them from
+   best to worst in json format`;
 
    const chatTemplate = ChatPromptTemplate.fromMessages([
       ["system", systemTemplate],

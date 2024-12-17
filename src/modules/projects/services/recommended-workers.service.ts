@@ -8,10 +8,7 @@ import { LangChainService } from './langchain.service'
 export async function getRecommendedWorkers({}: ProjectCreationSchema): Promise<Response<Worker[]>> {
   const supabase = createClientClient()
   const bestIds = await LangChainService()
-  console.log(bestIds);
   const { data, error } = await supabase.from('Trabajador').select('*').in('id', bestIds)
-  console.log(data);
-  console.log(error);
 
   if (error || !data) {
     return {
@@ -45,8 +42,13 @@ export async function getRecommendedWorkers({}: ProjectCreationSchema): Promise<
     }),
   )
 
+  // ordenar de mejor a peor
+  const orderedWorkers = bestIds
+  .map(id => workers.find(worker => worker.id === id))
+  .filter(worker => worker !== undefined);
+
   // ordenar de mas trabajos a menos trabajos
-  const sortedWorkers = workers.sort((a, b) => b.numberOfJobs - a.numberOfJobs)
+  const sortedWorkers = orderedWorkers.sort((a, b) => b.numberOfJobs - a.numberOfJobs)
 
   return {
     error: null,
