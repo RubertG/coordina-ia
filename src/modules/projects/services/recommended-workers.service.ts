@@ -6,14 +6,33 @@ import { ProjectCreationSchema, Worker } from '../types/types'
 import { LangChainService } from './langchain.service'
 import { Response } from './projects-worker.service'
 
-export async function getRecommendedWorkers({}: ProjectCreationSchema): Promise<Response<Worker[]>> {
+export async function getRecommendedWorkers(formData: ProjectCreationSchema): Promise<Response<Worker[]>> {
   const supabase = createClientClient()
-  const bestIds = await LangChainService()
+  let bestIds: string[] = []
+
+  try {
+    bestIds = await LangChainService(formData)
+  } catch (error) {
+    console.log('Error al obtener los trabajadores recomendados', error)
+
+    return {
+      error: 'Error al obtener los trabajadores recomendados',
+      data: [],
+    }
+  }
+
+  if (bestIds.length === 0) {
+    return {
+      error: 'No tienes trabajadores recomendados para este proyecto',
+      data: [],
+    }
+  }
+
   const { data, error } = await supabase.from('Trabajador').select('*').in('id', bestIds)
 
   if (error || !data) {
     return {
-      error: 'Error al obtener los trabajadores recomendados',
+      error: 'Error al obtener los trabajadores recomendados de la base de datos',
       data: [],
     }
   }
