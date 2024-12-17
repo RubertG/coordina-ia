@@ -20,10 +20,11 @@ interface Props {
   setOpen: (open: boolean) => void
 
   onLoading?: () => ReactNode
+  onError?: () => ReactNode
   children: (workers: Worker[]) => ReactNode
 }
 
-const WorkersModal = ({ className, loading, workers, error, onLoading, children, setOpen, open }: Props) => {
+const WorkersModal = ({ className, loading, workers, error, onLoading, children, setOpen, open, onError }: Props) => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
@@ -39,7 +40,7 @@ const WorkersModal = ({ className, loading, workers, error, onLoading, children,
         <div className={`grid max-h-96 overflow-y-auto ${className}`}>
           {loading && onLoading?.()}
 
-          {error && !loading && <p>{error}</p>}
+          {error && !loading && onError?.()}
           {!loading && workers.length !== 0 && !error && children(workers)}
         </div>
 
