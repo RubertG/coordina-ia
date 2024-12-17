@@ -1,3 +1,8 @@
+/**
+ * Este componente representa el formulario de inicio de sesión.
+ * Utiliza React Hook Form para el manejo de formularios y Zod para la validación de datos.
+ */
+
 'use client'
 
 import { login, registerSchemaType } from '@/modules/auth'

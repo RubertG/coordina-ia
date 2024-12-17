@@ -1,3 +1,12 @@
+/**
+ * Este archivo define la página principal que muestra los proyectos del usuario.
+ *
+ * Importa las funciones y componentes necesarios desde el módulo de proyectos.
+ *
+ * La función Home obtiene los proyectos mediante la función getProjects y renderiza
+ * un título, una lista de proyectos o un mensaje de error si la carga falla.
+ */
+
 import { getProjects, ProjectsContainer } from '@/modules/projects'
 import { ProjectCard } from '@/modules/projects'
 

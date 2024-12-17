@@ -1,3 +1,12 @@
+/**
+ * Footer Component
+ *
+ * Este componente representa el pie de página de la aplicación.
+ *
+ * Funcionalidades:
+ * - Muestra créditos de diseño con enlaces a los perfiles de GitHub de los diseñadores.
+ */
+
 import Link from 'next/link'
 
 export const Footer = () => {

@@ -1,3 +1,10 @@
+/**
+ * Modal para seleccionar trabajadores recomendados para un proyecto.
+ *
+ * @param {Props} props - Las propiedades del componente.
+ * @returns {JSX.Element} - Retorna un elemento JSX.
+ */
+
 import {
   AlertDialog,
   AlertDialogAction,

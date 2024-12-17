@@ -1,3 +1,13 @@
+/**
+ * Este archivo define la página de detalles de un proyecto específico.
+ *
+ * Importa los componentes y funciones necesarios desde los módulos core y projects.
+ *
+ * La función ProjectPage obtiene los detalles del proyecto mediante la función getProject
+ * y renderiza la información del proyecto, incluyendo nombre, descripción, tecnologías e integrantes.
+ * También incluye botones para editar y eliminar el proyecto.
+ */
+
 import { Button } from '@/modules/core'
 import { DeleteProjectButton, getProject, Workers } from '@/modules/projects'
 import { Suspense } from 'react'

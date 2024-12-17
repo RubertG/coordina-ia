@@ -7,8 +7,8 @@ body {
 }
 
 textarea {
-	resize: none;
-	field-sizing: content;
+  resize: none;
+  field-sizing: content;
 }
 
 @layer base {

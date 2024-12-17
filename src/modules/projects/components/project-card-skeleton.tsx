@@ -1,3 +1,9 @@
+/**
+ * Esqueleto de carga para la tarjeta de proyecto.
+ *
+ * @returns {JSX.Element} - Retorna un elemento JSX.
+ */
+
 import { Skeleton } from '@/modules/core'
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/modules/core'
 

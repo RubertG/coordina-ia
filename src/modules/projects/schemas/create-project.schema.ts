@@ -1,5 +1,8 @@
 import { z } from 'zod'
 
+/**
+ * Esquema de validación para la creación de proyectos.
+ */
 export const createProjectSchema = z.object({
   name: z.string().min(3, {
     message: 'El nombre debe tener al menos 3 caracteres.',

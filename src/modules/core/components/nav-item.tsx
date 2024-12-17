@@ -1,3 +1,13 @@
+/**
+ * NavItem Component
+ *
+ * Este componente representa un elemento individual de la barra de navegación.
+ *
+ * Props:
+ * - href (string): La URL a la que el enlace debe navegar.
+ * - label (string): El texto a mostrar para el enlace.
+ */
+
 'use client'
 
 import { NavLink } from '@/modules/core'

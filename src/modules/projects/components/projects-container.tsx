@@ -1,3 +1,10 @@
+/**
+ * Contenedor para mostrar una lista de proyectos.
+ *
+ * @param {Props} props - Las propiedades del componente.
+ * @returns {JSX.Element} - Retorna un elemento JSX.
+ */
+
 interface Props {
   className?: string
   children: React.ReactNode

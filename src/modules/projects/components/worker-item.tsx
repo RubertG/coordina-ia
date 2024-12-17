@@ -1,3 +1,10 @@
+/**
+ * Componente para mostrar un trabajador individual en la lista de selección.
+ *
+ * @param {Props} props - Las propiedades del componente.
+ * @returns {JSX.Element} - Retorna un elemento JSX.
+ */
+
 import clsx from 'clsx'
 
 import { Worker } from '../types/types'

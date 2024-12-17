@@ -12,6 +12,10 @@ interface Response<T = Database['public']['Tables']['Proyecto']['Row'][]> {
 
 type ProjectType = Database['public']['Tables']['Proyecto']['Row']
 
+/**
+ * Obtiene todos los proyectos del usuario autenticado.
+ * @returns Una respuesta con una lista de proyectos.
+ */
 export async function getProjects(): Promise<Response> {
   const supabase = await createClientServer()
   const {
@@ -42,6 +46,11 @@ export async function getProjects(): Promise<Response> {
   }
 }
 
+/**
+ * Obtiene un proyecto específico del usuario autenticado.
+ * @param id - ID del proyecto.
+ * @returns Una respuesta con el proyecto solicitado.
+ */
 export async function getProject(id: string): Promise<Response> {
   const supabase = await createClientServer()
   const {
@@ -73,6 +82,12 @@ export async function getProject(id: string): Promise<Response> {
   }
 }
 
+/**
+ * Crea un nuevo proyecto y asocia trabajadores a él.
+ * @param projectData - Datos del proyecto.
+ * @param workers - Lista de trabajadores a asociar.
+ * @returns Una respuesta con el ID del proyecto creado.
+ */
 export async function createProject(
   projectData: Omit<ProjectType, 'id' | 'usuario_id'>,
   workers: Worker[],
@@ -126,6 +141,11 @@ export async function createProject(
   }
 }
 
+/**
+ * Elimina un proyecto específico del usuario autenticado.
+ * @param id - ID del proyecto.
+ * @returns Una respuesta indicando el resultado de la operación.
+ */
 export async function deleteProject(id: string): Promise<Response> {
   const supabase = await createClientServer()
   const {

@@ -1,5 +1,11 @@
+/**
+ * Representa un valor JSON que puede ser una cadena, número, booleano, nulo, objeto o arreglo.
+ */
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
+/**
+ * Representa la estructura de la base de datos con esquemas, tablas, vistas, funciones, enumeraciones y tipos compuestos.
+ */
 export type Database = {
   graphql_public: {
     Tables: {
@@ -142,8 +148,14 @@ export type Database = {
   }
 }
 
+/**
+ * Representa las tablas y vistas públicas de la base de datos.
+ */
 type PublicSchema = Database[Extract<keyof Database, 'public'>]
 
+/**
+ * Representa las filas de una tabla o vista pública específica.
+ */
 export type Tables<
   PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] & PublicSchema['Views']) | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
@@ -165,6 +177,9 @@ export type Tables<
       : never
     : never
 
+/**
+ * Representa los datos de inserción para una tabla pública específica.
+ */
 export type TablesInsert<
   PublicTableNameOrOptions extends keyof PublicSchema['Tables'] | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
@@ -184,6 +199,9 @@ export type TablesInsert<
       : never
     : never
 
+/**
+ * Representa los datos de actualización para una tabla pública específica.
+ */
 export type TablesUpdate<
   PublicTableNameOrOptions extends keyof PublicSchema['Tables'] | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
@@ -203,6 +221,9 @@ export type TablesUpdate<
       : never
     : never
 
+/**
+ * Representa los valores de una enumeración pública específica.
+ */
 export type Enums<
   PublicEnumNameOrOptions extends keyof PublicSchema['Enums'] | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
@@ -214,6 +235,9 @@ export type Enums<
     ? PublicSchema['Enums'][PublicEnumNameOrOptions]
     : never
 
+/**
+ * Representa los tipos compuestos de un esquema público específico.
+ */
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes'] | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {

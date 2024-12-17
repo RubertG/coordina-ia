@@ -7,6 +7,11 @@ import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
 
 import { ProjectCreationSchema } from '../types/types'
 
+/**
+ * Servicio que utiliza LangChain para obtener los mejores trabajadores para un proyecto.
+ * @param formData - Datos del formulario de creación de proyecto.
+ * @returns Una lista de IDs de los mejores trabajadores.
+ */
 export async function LangChainService({
   description,
   maxWorkers,

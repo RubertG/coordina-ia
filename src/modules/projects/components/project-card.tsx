@@ -1,3 +1,10 @@
+/**
+ * Tarjeta para mostrar la información de un proyecto.
+ *
+ * @param {Props} props - Las propiedades del componente.
+ * @returns {JSX.Element} - Retorna un elemento JSX.
+ */
+
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Database } from '@/modules/core'
 import Link from 'next/link'
 

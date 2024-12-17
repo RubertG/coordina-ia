@@ -1,5 +1,11 @@
 import { ActionPayloadWorkersReducer, WorkersReducerState } from '../types/types'
 
+/**
+ * Reducer para gestionar el estado de los trabajadores.
+ * @param state - Estado actual del reducer.
+ * @param action - Acción a procesar.
+ * @returns El nuevo estado del reducer.
+ */
 export const workersReducer = (state: WorkersReducerState, action: ActionPayloadWorkersReducer) => {
   if (action.type === 'SET_WORKERS') {
     return {

@@ -1,3 +1,8 @@
+/**
+ * Componente de tarjeta para mostrar la información de un trabajador.
+ * Proporciona un enlace a la página de detalles del trabajador.
+ */
+
 import { Card, CardHeader, Database, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/modules/core'
 import Link from 'next/link'
 

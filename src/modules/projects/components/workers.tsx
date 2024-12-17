@@ -1,3 +1,10 @@
+/**
+ * Componente para mostrar la lista de trabajadores de un proyecto.
+ *
+ * @param {Props} props - Las propiedades del componente.
+ * @returns {JSX.Element | null} - Retorna un elemento JSX o null si hay un error.
+ */
+
 import { ProjectsWorkerService } from '../services/projects-worker.service'
 
 interface Props {

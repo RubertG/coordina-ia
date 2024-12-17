@@ -1,3 +1,12 @@
+/**
+ * Este archivo define la página para crear un nuevo proyecto.
+ *
+ * Importa el componente CreateProjectForm desde el módulo de proyectos y lo utiliza
+ * dentro de un componente funcional de React llamado CreateProjectPage.
+ *
+ * El componente CreateProjectPage renderiza un título y el formulario para crear un proyecto.
+ */
+
 import { CreateProjectForm } from '@/modules/projects'
 
 function CreateProjectPage() {

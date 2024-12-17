@@ -1,3 +1,10 @@
+/**
+ * Formulario para la creación de un nuevo proyecto.
+ *
+ * @param {Props} props - Las propiedades del componente.
+ * @returns {JSX.Element} - Retorna un elemento JSX.
+ */
+
 'use client'
 
 import {

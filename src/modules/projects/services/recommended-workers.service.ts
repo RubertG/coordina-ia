@@ -6,6 +6,11 @@ import { ProjectCreationSchema, Worker } from '../types/types'
 import { LangChainService } from './langchain.service'
 import { Response } from './projects-worker.service'
 
+/**
+ * Obtiene una lista de trabajadores recomendados para un proyecto dado.
+ * @param formData - Datos del formulario de creación de proyecto.
+ * @returns Una respuesta con una lista de trabajadores recomendados.
+ */
 export async function getRecommendedWorkers(formData: ProjectCreationSchema): Promise<Response<Worker[]>> {
   const supabase = createClientClient()
   let bestIds: string[] = []
@@ -14,7 +19,6 @@ export async function getRecommendedWorkers(formData: ProjectCreationSchema): Pr
     bestIds = await LangChainService(formData)
   } catch (error) {
     console.log('Error al obtener los trabajadores recomendados', error)
-
     return {
       error: 'Error al obtener los trabajadores recomendados',
       data: [],
@@ -62,12 +66,10 @@ export async function getRecommendedWorkers(formData: ProjectCreationSchema): Pr
     }),
   )
 
-  // ordenar de mejor a peor
   const orderedWorkers = bestIds
     .map((id) => workers.find((worker) => worker.id === id))
     .filter((worker) => worker !== undefined)
 
-  // ordenar de mas trabajos a menos trabajos
   const sortedWorkers = orderedWorkers.sort((a, b) => b.numberOfJobs - a.numberOfJobs)
 
   return {

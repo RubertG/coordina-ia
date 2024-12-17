@@ -1,24 +1,17 @@
+/**
+ * Formulario para la creación de un nuevo proyecto con selección de trabajadores.
+ *
+ * @param {Props} props - Las propiedades del componente.
+ * @returns {JSX.Element} - Retorna un elemento JSX.
+ */
+
 'use client'
 
 import { Card, CardContent, CardHeader } from '@/modules/core'
-import {
-  createProject,
-  createProjectSchema,
-  getRecommendedWorkers,
-  ProjectCreationSchema,
-  ProjectForm,
-  Worker,
-  WorkerItem,
-  workersReducer,
-  WorkersReducerState,
-} from '@/modules/projects'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { ProjectForm, WorkerItem, WorkersReducerState } from '@/modules/projects'
 import clsx from 'clsx'
-import { useRouter } from 'next/navigation'
-import { useReducer, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 
+import { useProjectForm } from '../hooks/use-project-form'
 import WorkersModal from './workers-modal'
 
 interface Props {
@@ -33,95 +26,17 @@ const workersInitialState: WorkersReducerState = {
 }
 
 export const CreateProjectForm = ({ className }: Props) => {
-  const [state, dispatch] = useReducer(workersReducer, workersInitialState)
-  const [prevForm, setPrevForm] = useState<ProjectCreationSchema>({
-    name: '',
-    description: '',
-    maxWorkers: '0',
-    technologies: '',
-  })
-  const [open, setOpen] = useState(false)
-  const router = useRouter()
-
-  const [isLoading, setIsLoading] = useState(false)
-  const form = useForm<ProjectCreationSchema>({
-    resolver: zodResolver(createProjectSchema),
-    defaultValues: {
-      name: '',
-      description: '',
-      maxWorkers: '0',
-      technologies: '',
-    },
-  })
-
-  const isSelected = (workerId: Worker['id']) => {
-    return state.selectedWorkers.some((selectedWorker) => selectedWorker.id === workerId)
-  }
-
-  const handlesubmit = async (data: ProjectCreationSchema) => {
-    if (state.selectedWorkers.length === 0) return
-
-    if (state.selectedWorkers.length > parseInt(data.maxWorkers)) {
-      toast.error('No puedes seleccionar más trabajadores de los que has indicado')
-
-      return
-    }
-
-    setIsLoading(true)
-    const { error, data: id } = await createProject(
-      {
-        descripcion: data.description,
-        nombre: data.name,
-        tecnologias: data.technologies,
-        integrantes: state.selectedWorkers.length,
-      },
-      state.selectedWorkers,
-    )
-
-    if (error || !id) {
-      toast.error(error)
-      setIsLoading(false)
-
-      return
-    }
-
-    toast.success('Proyecto creado correctamente')
-    setIsLoading(false)
-    router.push(`/proyectos/${id}`)
-  }
-
-  const handleSelectWorker = (worker: Worker) => {
-    dispatch({ type: 'SELECT_WORKER', payload: worker })
-  }
-
-  const handleOpenModal = () => {
-    setOpen(!open)
-  }
-
-  const handleLoadWorkers = async () => {
-    await form.handleSubmit(async (formData) => {
-      if (JSON.stringify(prevForm) === JSON.stringify(formData)) {
-        handleOpenModal()
-        return
-      }
-
-      setPrevForm(formData)
-      handleOpenModal()
-      dispatch({ type: 'SET_LOADING', payload: true })
-
-      const { data, error } = await getRecommendedWorkers(formData)
-
-      if (error) {
-        dispatch({ type: 'SET_ERROR', payload: error })
-        dispatch({ type: 'SET_LOADING', payload: false })
-
-        return
-      }
-
-      dispatch({ type: 'SET_WORKERS', payload: data })
-      dispatch({ type: 'SET_LOADING', payload: false })
-    })()
-  }
+  const {
+    state,
+    form,
+    handleLoadWorkers,
+    handleOpenModal,
+    handleSelectWorker,
+    handlesubmit,
+    isLoading,
+    isSelected,
+    open,
+  } = useProjectForm({ workersInitialState })
 
   return (
     <>

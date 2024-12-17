@@ -1,3 +1,8 @@
+/**
+ * Este componente representa el formulario de registro de usuarios.
+ * Utiliza React Hook Form para el manejo de formularios y Zod para la validación de datos.
+ */
+
 'use client'
 
 import { registerSchemaType, signup } from '@/modules/auth'

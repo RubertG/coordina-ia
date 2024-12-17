@@ -1,3 +1,13 @@
+/**
+ * Página de inicio de sesión y registro.
+ *
+ * Esta página permite a los usuarios registrarse o iniciar sesión en la aplicación.
+ * Si el usuario ya está autenticado, se redirige a la página principal.
+ *
+ * @param {Props} props - Los parámetros de búsqueda de la URL.
+ * @returns {JSX.Element} - El componente de la página de inicio de sesión y registro.
+ */
+
 import { RegisterForm, SiginForm } from '@/modules/auth'
 import { createClientServer, SearchParams } from '@/modules/core'
 import {

@@ -1,3 +1,10 @@
+/**
+ * Botón para eliminar un proyecto.
+ *
+ * @param {Props} props - Las propiedades del componente.
+ * @returns {JSX.Element} - Retorna un elemento JSX.
+ */
+
 'use client'
 
 import {

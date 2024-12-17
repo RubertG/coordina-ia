@@ -1,6 +1,12 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+/**
+ * Actualiza la sesión del usuario utilizando Supabase y redirige si no hay usuario autenticado.
+ *
+ * @param request - Solicitud HTTP de Next.js.
+ * @returns Respuesta HTTP de Next.js.
+ */
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,

@@ -1,3 +1,13 @@
+/**
+ * LoginButton Component
+ *
+ * Este componente muestra un botón de inicio de sesión o cierre de sesión dependiendo del estado de autenticación del usuario.
+ *
+ * Funcionalidades:
+ * - Muestra un botón para iniciar sesión si el usuario no está autenticado.
+ * - Muestra un botón para cerrar sesión si el usuario está autenticado.
+ */
+
 'use client'
 
 import { logout } from '@/modules/auth'

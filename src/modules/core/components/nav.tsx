@@ -1,3 +1,14 @@
+/**
+ * Nav Component
+ *
+ * Este componente representa la barra de navegación principal de la aplicación.
+ *
+ * Funcionalidades:
+ * - Muestra enlaces de navegación.
+ * - Incluye un botón para alternar el menú en dispositivos móviles.
+ * - Muestra el botón de inicio de sesión.
+ */
+
 'use client'
 
 import { LoginButton, NavItem, NavLink } from '@/modules/core'
