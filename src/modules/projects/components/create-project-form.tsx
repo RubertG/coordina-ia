@@ -130,7 +130,7 @@ export const CreateProjectForm = ({ className }: Props) => {
         setOpen={handleOpenModal}
         workers={state.workers}
         loading={state.loading}
-        onLoading={() => <p className='text-sm'>Cargando...</p>}
+        onLoading={() => <p className="text-sm">Cargando...</p>}
         error={state.error}
       >
         {(workers) => (

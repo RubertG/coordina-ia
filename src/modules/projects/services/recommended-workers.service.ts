@@ -1,9 +1,10 @@
-"use server"
+'use server'
+
 import { createClientClient } from '@/modules/core'
 
 import { ProjectCreationSchema, Worker } from '../types/types'
-import { Response } from './projects-worker.service'
 import { LangChainService } from './langchain.service'
+import { Response } from './projects-worker.service'
 
 export async function getRecommendedWorkers({}: ProjectCreationSchema): Promise<Response<Worker[]>> {
   const supabase = createClientClient()
@@ -19,10 +20,10 @@ export async function getRecommendedWorkers({}: ProjectCreationSchema): Promise<
 
   const workers = await Promise.all(
     data.map(async (worker): Promise<Worker> => {
-      const {
-        data: projects,
-        error: projectsError,
-      } = await supabase.from('Proyecto_Trabajador').select('id_Proyecto').eq('id_Trabajador', worker.id)
+      const { data: projects, error: projectsError } = await supabase
+        .from('Proyecto_Trabajador')
+        .select('id_Proyecto')
+        .eq('id_Trabajador', worker.id)
 
       if (projectsError || !projects) {
         return {
@@ -44,8 +45,8 @@ export async function getRecommendedWorkers({}: ProjectCreationSchema): Promise<
 
   // ordenar de mejor a peor
   const orderedWorkers = bestIds
-  .map(id => workers.find(worker => worker.id === id))
-  .filter(worker => worker !== undefined);
+    .map((id) => workers.find((worker) => worker.id === id))
+    .filter((worker) => worker !== undefined)
 
   // ordenar de mas trabajos a menos trabajos
   const sortedWorkers = orderedWorkers.sort((a, b) => b.numberOfJobs - a.numberOfJobs)

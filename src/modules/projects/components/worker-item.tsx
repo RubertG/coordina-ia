@@ -20,7 +20,7 @@ export const WorkerItem = ({ className, worker, onClick, isSelected }: Props) =>
       )}
       onClick={() => onClick(worker)}
     >
-      <p className="text-zinc-700 text-sm">{worker.name}</p>
+      <p className="text-sm text-zinc-700">{worker.name}</p>
       <p>{worker.numberOfJobs}</p>
     </li>
   )
