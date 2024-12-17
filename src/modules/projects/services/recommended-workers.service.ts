@@ -1,11 +1,17 @@
+"use server"
 import { createClientClient } from '@/modules/core'
 
 import { ProjectCreationSchema, Worker } from '../types/types'
 import { Response } from './projects-worker.service'
+import { LangChainService } from './langchain.service'
 
 export async function getRecommendedWorkers({}: ProjectCreationSchema): Promise<Response<Worker[]>> {
   const supabase = createClientClient()
-  const { data, error } = await supabase.from('Trabajador').select('*')
+  const bestIds = await LangChainService()
+  console.log(bestIds);
+  const { data, error } = await supabase.from('Trabajador').select('*').in('id', bestIds)
+  console.log(data);
+  console.log(error);
 
   if (error || !data) {
     return {
@@ -19,10 +25,9 @@ export async function getRecommendedWorkers({}: ProjectCreationSchema): Promise<
       const {
         data: projects,
         error: projectsError,
-        count,
       } = await supabase.from('Proyecto_Trabajador').select('id_Proyecto').eq('id_Trabajador', worker.id)
 
-      if (projectsError || !projects || !count) {
+      if (projectsError || !projects) {
         return {
           name: worker.nombre,
           id: worker.id,
@@ -35,7 +40,7 @@ export async function getRecommendedWorkers({}: ProjectCreationSchema): Promise<
         name: worker.nombre,
         id: worker.id,
         curriculum: worker.curriculum,
-        numberOfJobs: count,
+        numberOfJobs: projects.length,
       }
     }),
   )

@@ -39,7 +39,7 @@ const WorkersModal = ({ className, loading, workers, error, onLoading, children,
         <div className={`grid max-h-96 overflow-y-auto ${className}`}>
           {loading && onLoading?.()}
 
-          {error && <p>{error}</p>}
+          {error && !loading && <p>{error}</p>}
           {!loading && workers.length !== 0 && !error && children(workers)}
         </div>
 
