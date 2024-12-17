@@ -94,7 +94,7 @@ const ProjectForm = ({ form, handlesubmit, isLoading, loadWorkers }: Props) => {
             textLoading="Guardando proyecto"
             isLoading={isLoading}
           />
-          <Button variant="ghost" type="submit" onClick={loadWorkers}>
+          <Button variant="ghost" type="button" onClick={loadWorkers}>
             Cargar mejores trabajadores
           </Button>
         </footer>
