@@ -132,12 +132,51 @@ export type Database = {
         }
         Relationships: []
       }
+      Embed_Trabajador: {
+        Row: {
+          embedding: string | null
+          id: string
+          id_chunk: number
+          texto_chunk: string
+        }
+        Insert: {
+          embedding?: string | null
+          id?: string
+          id_chunk: number
+          texto_chunk: string
+        }
+        Update: {
+          embedding?: string | null
+          id?: string
+          id_chunk?: number
+          texto_chunk?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Embed_Trabajador_id_fkey"
+            columns: ["id"]
+            isOneToOne: false
+            referencedRelation: "Trabajador"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      match_documents: {
+        Args: {
+          query_embedding: string
+          match_threshold: number
+          match_count: number
+        }
+        Returns: {
+          id: string
+          similarity: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
