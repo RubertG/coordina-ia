@@ -16,6 +16,7 @@ export interface Worker {
   name: string
   curriculum: string
   numberOfJobs: number
+  keyPoints: string[]
 }
 
 /**

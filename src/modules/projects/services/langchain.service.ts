@@ -8,54 +8,50 @@ import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
 import { ProjectCreationSchema } from '../types/types'
 
 /**
- * Servicio que utiliza LangChain para obtener los mejores trabajadores para un proyecto.
+ * Servicio que utiliza LangChain para devolver puntos claves de los mejores trabajadores para un proyecto.
  * @param formData - Datos del formulario de creación de proyecto.
- * @returns Una lista de IDs de los mejores trabajadores.
+ * @returns Una objeto con las IDs y los puntos clave del trabajador.
  */
-export async function LangChainService({
+export async function LangChainService(idsWorkers: string[], {
   description,
-  maxWorkers,
   technologies,
-}: ProjectCreationSchema): Promise<string[]> {
+}: ProjectCreationSchema): Promise<Record<string, any>[]> {
   const llm = new ChatGoogleGenerativeAI({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-2.0-flash',
     temperature: 0,
-    apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
-  })
+    apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY
+  });
 
-  const systemTemplate = `VERY IMPORTANT: You should only return the id of the users who are the best, no additional
-   information. Act as an expert in the formation of software development teams, especially in teams that handle {techs}
-   technologies. You will receive a data structure that has employee information such as id, curriculum and name.`
+  const systemTemplate = `VERY IMPORTANT: You must return ONLY a JSON object with the following structure:
+    "id": "string",
+    "points": ["string"]
+  
+  Do not include any additional text, explanations, or formatting. Act as an expert in the formation of software 
+  development teams, especially in teams that handle {techs} technologies. You will receive a data structure that has 
+  employee information such as id, curriculum and name.`
 
-  const humanTemplate = `According to the following list of workers: {workers} , analyze each curriculum and choose
-   the {cant} best members who can form a development team that has the following description: {desc}. Show them from
-   best to worst in json format`
+  const humanTemplate = `According to the following worker: {worker}. Based on their curriculum, provide the key points 
+  that make the worker suitable for the project described as: {desc}. The points should be brief, concise and 3 points 
+  maximum.`
 
   const chatTemplate = ChatPromptTemplate.fromMessages([
     ['system', systemTemplate],
     ['user', humanTemplate],
   ])
-  let rawData
-  let result = []
+  let rawData = []
   const parser = new JsonOutputParser()
   const chain = llm.pipe(parser)
 
-  const wor = await WorkersService.getWorkers()
-
-  if (wor.data) {
+  for (let i = 0; i < idsWorkers.length; i++) {
+    const worker = await WorkersService.getWorker(idsWorkers[i]);
     const rta = await chatTemplate.invoke({
-      techs: technologies,
-      workers: wor.data,
-      cant: maxWorkers,
-      desc: description,
-    })
+        techs: technologies,
+        worker: worker.data,
+        desc: description
+    });
 
-    rawData = await chain.invoke(rta)
+    rawData.push(await chain.invoke(rta));
   }
-
-  if (rawData && Array.isArray(rawData)) {
-    result = rawData.map((id) => id.toString())
-  }
-
-  return result
+  
+  return rawData;
 }
