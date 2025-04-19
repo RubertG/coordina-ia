@@ -27,6 +27,9 @@ export async function getRecommendedWorkers(formData: ProjectCreationSchema): Pr
   // tecnologias del proyecto a crear
   // "React.js, TypeScript, Tailwind CSS, Node.js, Express.js, MongoDB, JWT, OAuth (Google, Apple), Vercel/Netlify (frontend), Render/Railway (backend), Git, GitHub, Figma, ESLint, Prettier."
 
+  // Llamar a la funcion de traducir a ingles el proyecto, luego buscar los mejores trabajadores segun embedding, luego
+  // llamar a langchain para extraer lo puntos relevantes, luego traducir los puntos a español
+
   let bestWorkers = []
   let bestIds: string[] = []
 
