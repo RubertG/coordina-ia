@@ -6,6 +6,7 @@ import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
 
 import { ProjectCreationSchema } from '../types/types'
+import { englishToSpanish } from './translator.service'
 
 /**
  * Servicio que utiliza LangChain para devolver puntos claves de los mejores trabajadores para un proyecto.
@@ -38,7 +39,8 @@ export async function LangChainService(idsWorkers: string[], {
     ['system', systemTemplate],
     ['user', humanTemplate],
   ])
-  let rawData = []
+
+  let result = []
   const parser = new JsonOutputParser()
   const chain = llm.pipe(parser)
 
@@ -50,8 +52,10 @@ export async function LangChainService(idsWorkers: string[], {
         desc: description
     });
 
-    rawData.push(await chain.invoke(rta));
+    let rawData = await chain.invoke(rta);
+    let translated = await englishToSpanish(rawData);
+    result.push(translated);
   }
   
-  return rawData;
+  return result;
 }
