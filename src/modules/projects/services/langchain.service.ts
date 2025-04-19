@@ -13,15 +13,15 @@ import { englishToSpanish } from './translator.service'
  * @param formData - Datos del formulario de creación de proyecto.
  * @returns Una objeto con las IDs y los puntos clave del trabajador.
  */
-export async function LangChainService(idsWorkers: string[], {
-  description,
-  technologies,
-}: ProjectCreationSchema): Promise<Record<string, any>[]> {
+export async function LangChainService(
+  idsWorkers: string[],
+  { description, technologies }: ProjectCreationSchema,
+): Promise<Record<string, any>[]> {
   const llm = new ChatGoogleGenerativeAI({
     model: 'gemini-2.0-flash',
     temperature: 0,
-    apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY
-  });
+    apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+  })
 
   const systemTemplate = `VERY IMPORTANT: You must return ONLY a JSON object with the following structure:
     "id": "string",
@@ -45,12 +45,12 @@ export async function LangChainService(idsWorkers: string[], {
   const chain = llm.pipe(parser)
 
   for (let i = 0; i < idsWorkers.length; i++) {
-    const worker = await WorkersService.getWorker(idsWorkers[i]);
+    const worker = await WorkersService.getWorker(idsWorkers[i])
     const rta = await chatTemplate.invoke({
-        techs: technologies,
-        worker: worker.data,
-        desc: description
-    });
+      techs: technologies,
+      worker: worker.data,
+      desc: description,
+    })
 
     let rawData = await chain.invoke(rta);
     let translated = await englishToSpanish(rawData);
