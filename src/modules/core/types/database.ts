@@ -153,11 +153,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "Embed_Trabajador_id_fkey"
-            columns: ["id"]
+            foreignKeyName: 'Embed_Trabajador_id_fkey'
+            columns: ['id']
             isOneToOne: false
-            referencedRelation: "Trabajador"
-            referencedColumns: ["id"]
+            referencedRelation: 'Trabajador'
+            referencedColumns: ['id']
           },
         ]
       }
