@@ -5,7 +5,6 @@ import { JsonOutputParser } from '@langchain/core/output_parsers'
 import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
 
-import { ProjectCreationSchema } from '../types/types'
 import { englishToSpanish } from './translator.service'
 
 /**
@@ -15,7 +14,8 @@ import { englishToSpanish } from './translator.service'
  */
 export async function LangChainService(
   idsWorkers: string[],
-  { description, technologies }: ProjectCreationSchema,
+  description: string,
+  technologies: string
 ): Promise<Record<string, any>[]> {
   const llm = new ChatGoogleGenerativeAI({
     model: 'gemini-2.0-flash',
@@ -40,22 +40,23 @@ export async function LangChainService(
     ['user', humanTemplate],
   ])
 
-  let result = []
   const parser = new JsonOutputParser()
   const chain = llm.pipe(parser)
 
-  for (let i = 0; i < idsWorkers.length; i++) {
-    const worker = await WorkersService.getWorker(idsWorkers[i])
-    const rta = await chatTemplate.invoke({
-      techs: technologies,
-      worker: worker.data,
-      desc: description,
-    })
+  const result = await Promise.all(
+    idsWorkers.map(async (id) => {
+      const worker = await WorkersService.getWorker(id)
+      const rta = await chatTemplate.invoke({
+        techs: technologies,
+        worker: worker.data,
+        desc: description,
+      })
 
-    let rawData = await chain.invoke(rta);
-    let translated = await englishToSpanish(rawData);
-    result.push(translated);
-  }
+      let rawData = await chain.invoke(rta)
+      let translated = await englishToSpanish(rawData)
+      return translated
+    })
+  )
   
   return result;
 }
