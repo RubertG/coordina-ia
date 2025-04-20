@@ -15,7 +15,7 @@ import { englishToSpanish } from './translator.service'
 export async function LangChainService(
   idsWorkers: string[],
   description: string,
-  technologies: string
+  technologies: string,
 ): Promise<Record<string, any>[]> {
   const llm = new ChatGoogleGenerativeAI({
     model: 'gemini-2.0-flash',
@@ -55,8 +55,8 @@ export async function LangChainService(
       let rawData = await chain.invoke(rta)
       let translated = await englishToSpanish(rawData)
       return translated
-    })
+    }),
   )
-  
-  return result;
+
+  return result
 }
