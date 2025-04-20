@@ -12,7 +12,7 @@ import { ProjectForm, WorkerItem, WorkersReducerState } from '@/modules/projects
 import clsx from 'clsx'
 
 import { useProjectForm } from '../hooks/use-project-form'
-import WorkersModal from './workers-modal'
+import { WorkersModal } from './workers-modal'
 
 interface Props {
   className?: string

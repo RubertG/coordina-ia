@@ -59,4 +59,4 @@ const WorkersModal = ({ className, loading, workers, error, onLoading, children,
   )
 }
 
-export default WorkersModal
+export { WorkersModal }
