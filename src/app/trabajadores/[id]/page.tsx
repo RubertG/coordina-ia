@@ -1,4 +1,4 @@
-import { WorkersService } from '@/modules/workers'
+import { getWorker } from '@/modules/workers'
 
 type Params = Promise<{ id: string }>
 
@@ -8,7 +8,7 @@ interface Props {
 
 async function WorkerPage({ params }: Props) {
   const { id } = await params
-  const { data, error } = await WorkersService.getWorker(id)
+  const { data, error } = await getWorker(id)
   const worker = data[0]
 
   if (error || !worker) return <p className="text-center text-sm text-zinc-800">{error} :(</p>

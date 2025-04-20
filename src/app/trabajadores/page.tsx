@@ -7,11 +7,10 @@
  * y renderiza un título, una lista de tarjetas de trabajadores o un mensaje de error si la carga falla.
  */
 
-import { WorkersService } from '@/modules/workers'
-import { WorkerCard } from '@/modules/workers'
+import { getWorkers, WorkerCard } from '@/modules/workers'
 
 export default async function TrabajadoresPage() {
-  const { data: workers, error } = await WorkersService.getWorkers()
+  const { data: workers, error } = await getWorkers()
 
   return (
     <>

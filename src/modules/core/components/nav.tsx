@@ -30,6 +30,10 @@ const links: NavLink[] = [
     href: '/trabajadores',
     label: 'Trabajadores',
   },
+  {
+    href: '/crear-trabajador',
+    label: 'Crear trabajador',
+  },
 ]
 
 export const Nav = () => {

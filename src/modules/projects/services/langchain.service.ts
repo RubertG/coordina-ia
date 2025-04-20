@@ -1,6 +1,6 @@
 'use server'
 
-import { WorkersService } from '@/modules/workers'
+import { getWorker } from '@/modules/workers'
 import { JsonOutputParser } from '@langchain/core/output_parsers'
 import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
@@ -43,7 +43,7 @@ export async function LangChainService(
   const chain = llm.pipe(parser)
 
   for (let i = 0; i < idsWorkers.length; i++) {
-    const worker = await WorkersService.getWorker(idsWorkers[i])
+    const worker = await getWorker(idsWorkers[i])
     const rta = await chatTemplate.invoke({
       techs: technologies,
       worker: worker.data,
