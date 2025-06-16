@@ -3,10 +3,13 @@
 import { createClientClient } from '@/modules/core'
 
 import { ProjectCreationSchema, Worker } from '../types/types'
-import { LangChainService } from './langchain.service'
 import { Response } from './projects-worker.service'
 import { cosineSimilarity } from './embedding-search.service'
 import { spanishToEnglish } from './translator.service'
+import { suggestsTechnologies } from './suggest-techs.service'
+import { analyzeTechnologies } from './analyze-techs.service'
+import { analyzeTeam } from './analyze-team.service'
+import { suggestTeam } from './suggest-team.service'
 
 /**
  * Obtiene una lista de trabajadores recomendados para un proyecto dado.
@@ -40,7 +43,7 @@ export async function getRecommendedWorkers(formData: ProjectCreationSchema): Pr
   }
 
   const { data, error } = await supabase.from('Trabajador').select('*').in('id', bestIds)
-  const pointsWorkers = await LangChainService(bestIds, project.description, project.technologies)
+  //await suggestTeam(bestIds, project.description, project.technologies, formData.maxWorkers)
 
   if (error || !data) {
     return {
@@ -56,15 +59,12 @@ export async function getRecommendedWorkers(formData: ProjectCreationSchema): Pr
         .select('id_Proyecto')
         .eq('id_Trabajador', worker.id)
 
-      const keyPoints = pointsWorkers.find((wor) => wor.id === worker.id)?.points || []
-
       if (projectsError || !projects) {
         return {
           name: worker.nombre,
           id: worker.id,
           curriculum: worker.curriculum,
-          numberOfJobs: 0,
-          keyPoints,
+          numberOfJobs: 0
         }
       }
 
@@ -72,8 +72,7 @@ export async function getRecommendedWorkers(formData: ProjectCreationSchema): Pr
         name: worker.nombre,
         id: worker.id,
         curriculum: worker.curriculum,
-        numberOfJobs: projects.length,
-        keyPoints,
+        numberOfJobs: projects.length
       }
     }),
   )

@@ -4,7 +4,7 @@ import { JsonOutputParser } from '@langchain/core/output_parsers'
 
 import { ProjectCreationSchema } from '../types/types'
 
-// Función necesaria para traducir los puntos relevantes del trabajador
+// Función necesaria para traducir los puntos relevantes del equipo
 export async function englishToSpanish(points: Record<string, any>) {
   const llm = new ChatGoogleGenerativeAI({
     model: 'gemini-1.5-flash',
