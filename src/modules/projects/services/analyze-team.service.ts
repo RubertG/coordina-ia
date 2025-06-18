@@ -26,7 +26,7 @@ export async function analyzeTeam(idsWorkers: string[], descriptionP: string, te
    ])
 
   const parser = new StringOutputParser()
-  const chain = llm.pipe(parser)
+  const chain = chatTemplate.pipe(llm).pipe(parser)
 
   const workers = await Promise.all(
     idsWorkers.map(async (id) => {
@@ -34,13 +34,11 @@ export async function analyzeTeam(idsWorkers: string[], descriptionP: string, te
     })
   )
 
-   const rta = await chatTemplate.invoke({
+   const result = await chain.invoke({
       workers: workers,
       desc: descriptionP,
       techs: technologiesP
    })
-
-   const result = await chain.invoke(rta)
-   console.log(result)
+   
    return result
 }

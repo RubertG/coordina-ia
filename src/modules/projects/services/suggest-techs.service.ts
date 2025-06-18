@@ -23,14 +23,12 @@ export async function suggestsTechnologies(nameP: string, descriptionP: string) 
    ])
 
   const parser = new StringOutputParser()
-  const chain = llm.pipe(parser)
+  const chain = chatTemplate.pipe(llm).pipe(parser)
 
-  const rta = await chatTemplate.invoke({
+   const result = await chain.invoke({
       name: nameP,
       desc: descriptionP,
    })
-
-   const result = await chain.invoke(rta)
-   console.log(result)
+   
    return result
 }

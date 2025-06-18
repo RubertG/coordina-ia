@@ -24,16 +24,14 @@ export async function analyzeTechnologies(nameP: string, descriptionP: string, t
       ['user', humanTemplate]
    ])
 
-  const parser = new StringOutputParser()
-  const chain = llm.pipe(parser)
+   const parser = new StringOutputParser()
+   const chain = chatTemplate.pipe(llm).pipe(parser)
 
-  const rta = await chatTemplate.invoke({
+   const result = await chain.invoke({
       name: nameP,
       desc: descriptionP,
       techs: technologiesP
    })
-
-   const result = await chain.invoke(rta)
-   console.log(result)
+   
    return result
 }

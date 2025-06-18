@@ -6,10 +6,6 @@ import { ProjectCreationSchema, Worker } from '../types/types'
 import { Response } from './projects-worker.service'
 import { cosineSimilarity } from './embedding-search.service'
 import { spanishToEnglish } from './translator.service'
-import { suggestsTechnologies } from './suggest-techs.service'
-import { analyzeTechnologies } from './analyze-techs.service'
-import { analyzeTeam } from './analyze-team.service'
-import { suggestTeam } from './suggest-team.service'
 
 /**
  * Obtiene una lista de trabajadores recomendados para un proyecto dado.
@@ -43,7 +39,6 @@ export async function getRecommendedWorkers(formData: ProjectCreationSchema): Pr
   }
 
   const { data, error } = await supabase.from('Trabajador').select('*').in('id', bestIds)
-  //await suggestTeam(bestIds, project.description, project.technologies, formData.maxWorkers)
 
   if (error || !data) {
     return {

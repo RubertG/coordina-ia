@@ -7,7 +7,7 @@ import { ProjectCreationSchema } from '../types/types'
 // Función necesaria para traducir los puntos relevantes del equipo
 export async function englishToSpanish(points: Record<string, any>) {
   const llm = new ChatGoogleGenerativeAI({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-2.0-flash-lite',
     temperature: 0,
     apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
   })
@@ -23,12 +23,11 @@ export async function englishToSpanish(points: Record<string, any>) {
   ])
 
   const parser = new JsonOutputParser()
-  const chain = llm.pipe(parser)
-  const rta = await chatTemplate.invoke({
+  const chain = chatTemplate.pipe(llm).pipe(parser)
+
+  let result = await chain.invoke({
     list: points,
   })
-
-  let result = await chain.invoke(rta)
 
   return result
 }
@@ -36,7 +35,7 @@ export async function englishToSpanish(points: Record<string, any>) {
 // Función necesaria para traducir el proyecto a ingles y generar un mejor embedding
 export async function spanishToEnglish({ name, description, technologies }: ProjectCreationSchema) {
   const llm = new ChatGoogleGenerativeAI({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-2.0-flash-lite',
     temperature: 0,
     apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
   })
@@ -57,14 +56,13 @@ export async function spanishToEnglish({ name, description, technologies }: Proj
   ])
 
   const parser = new JsonOutputParser()
-  const chain = llm.pipe(parser)
-  const rta = await chatTemplate.invoke({
+  const chain = chatTemplate.pipe(llm).pipe(parser)
+
+  let result = await chain.invoke({
     nameP: name,
     descP: description,
     techsP: technologies,
   })
-
-  let result = await chain.invoke(rta)
 
   return result
 }

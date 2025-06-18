@@ -14,7 +14,7 @@ import { englishToSpanish } from './translator.service'
  */
 export async function suggestTeam(idsWorkers: string[], descriptionP: string, technologiesP: string, cantidadP: string) {
   const llm = new ChatGoogleGenerativeAI({
-    model: 'gemini-2.0-flash',
+    model: 'gemini-2.5-flash',
     temperature: 0,
     apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
   })
@@ -36,7 +36,7 @@ export async function suggestTeam(idsWorkers: string[], descriptionP: string, te
   ])
 
   const parser = new JsonOutputParser()
-  const chain = llm.pipe(parser)
+  const chain = chatTemplate.pipe(llm).pipe(parser)
 
   const workers = await Promise.all(
     idsWorkers.map(async (id) => {
@@ -44,17 +44,13 @@ export async function suggestTeam(idsWorkers: string[], descriptionP: string, te
     })
   )
 
-  const rta = await chatTemplate.invoke({
+  let rawData = await chain.invoke({
     techs: technologiesP,
     workers: workers,
     desc: descriptionP,
     cant: cantidadP
   })
-
-  let rawData = await chain.invoke(rta)
   let translated = await englishToSpanish(rawData)
-
-  console.log(translated)
 
   return {
     ids: translated.id,

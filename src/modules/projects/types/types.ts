@@ -16,7 +16,17 @@ export interface Worker {
   name: string
   curriculum: string
   numberOfJobs: number
-  //keyPoints: string[]
+}
+
+export interface Team {
+  workers: Worker[]
+  points: string[]
+}
+
+export interface Result {
+  technologies: string;
+  workers: Worker[];
+  team: Team;
 }
 
 /**
