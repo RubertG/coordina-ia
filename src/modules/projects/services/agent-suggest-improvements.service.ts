@@ -167,25 +167,29 @@ ${JSON.stringify(inputObject)}
 1. Check Input for Technologies:
       Examine 'inputObject.technologies'.
 2. Analyze or Suggest Technologies:
-      If 'inputObject.technologies' is provided and not empty:
+      If 'inputObject.technologies' is provided AND not empty:
          Use the 'AnalyzeTechnologies' tool.
          If the observation from 'AnalyzeTechnologies' indicates the technologies are unsuitable or that alternatives must be suggested:
             Then, use the 'SuggestTechnologies' tool. These newly suggested technologies become the **finalized technologies** for the project.
+            Set the flag **technologies_were_altered** = true.
          Else (if 'AnalyzeTechnologies' indicates they are suitable):
             The provided 'inputObject.technologies' become the **finalized technologies**.
-      Else (if 'inputObject.technologies' is NOT provided or is empty):
+            Set the flag **technologies_were_altered** = false.
+      Else (if 'inputObject.technologies' is NOT provided OR is empty):
          Use the 'SuggestTechnologies' tool. The result becomes the **finalized technologies**.
-3. Outcome of Phase 1: You must now have a list of **finalized technologies**. All subsequent steps will use these.
+         Set the flag **technologies_were_altered** = true.
+3. Outcome of Phase 1: You must now have a list of **finalized technologies** and the boolean flag **technologies_were_altered**. All subsequent steps will use these.
 
 **Phase 2: Worker Identification**
 1. Check Input for Worker IDs:
       Examine 'inputObject.workers'.
+      Refer to the **technologies_were_altered** flag from Phase 1.
 2. Recommend Workers if Necessary:
-      If 'inputObject.workers' is NOT provided or is empty:
+      If 'inputObject.workers' is NOT provided OR is empty OR **technologies_were_altered** is true:
          Use the 'RecommendWorkers' tool.
          The input for 'RecommendWorkers' must have the **finalized technologies** from Phase 1.
          The result from 'RecommendWorkers' becomes the **available workers**.
-      Else (if 'inputObject.workers' IS provided):
+      Else (if 'inputObject.workers' IS provided AND **technologies_were_altered** is false):
          These provided IDs become the **available workers*.
 3. Outcome of Phase 2: You must now have a **available workers**. All subsequent steps will use these.
 
@@ -193,7 +197,7 @@ ${JSON.stringify(inputObject)}
 1. Check Input for Team IDs:
       Examine 'inputObject.team'.
 2. Analyze or Suggest Team:
-      If 'inputObject.team' IS provided and not empty:
+      If 'inputObject.team' IS provided AND not empty:
          Use the 'AnalyzeTeam' tool.
          The input for 'AnalyzeTeam' must have the **finalized technologies** from Phase 1.
          If the observation from 'AnalyzeTeam' indicates the team is unsuitable or that alternatives must be suggested:
@@ -202,7 +206,7 @@ ${JSON.stringify(inputObject)}
             The result from 'SuggestTeam' becomes the **final team composition**.
          Else (if 'AnalyzeTeam' indicates the team is suitable):
             The provided 'inputObject.team' becomes the **final team composition**.
-      Else (if 'inputObject.team' is NOT provided or is empty):
+      Else (if 'inputObject.team' is NOT provided OR is empty):
          Use the 'SuggestTeam' tool.
          The input for 'SuggestTeam' must have the **available workers** from Phase 2 and **finalized technologies** from Phase 1.
          The result from 'SuggestTeam' becomes the **final team composition**.
