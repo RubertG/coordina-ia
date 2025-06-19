@@ -28,12 +28,14 @@ export async function suggestTeam(
     "id": ["string"],
     "points": ["string"]
   
-  Do not include any additional text, explanations, or formatting. Act as an expert in the formation of software development teams, especially in teams that handle {techs} technologies.
+  Do not include any additional text, explanations, or formatting, and ensure that the format of the points is plain text without any markdown symbols (e.g., no **, *, or other formatting characters).
+  Act as an expert in the formation of software development teams, especially in teams that handle {techs} technologies.
   You will receive a data structure that has employee information such as id, curriculum and name.`
 
   const humanTemplate = `According to the following workers: {workers}. Based on their curriculum, select {cant} workers whose backgrounds best align with the project described as: {desc}.
   For the selected group, provide up to six concise bullet points that highlight the collective strengths they bring to the project as a team.
-  Focus on how their collective skills, experience, and complementarities enhance collaboration, balance, and overall team performance.`
+  Five of these points should focus on how their collective skills, experience, and expertise complement each other to enhance collaboration, role balance, and overall team performance.
+  The sixth point should emphasize the team's soft skills, such as communication, adaptability, leadership, teamwork, or other interpersonal strengths relevant to the success of the project.`
 
   const chatTemplate = ChatPromptTemplate.fromMessages([
     ['system', systemTemplate],
