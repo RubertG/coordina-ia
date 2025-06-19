@@ -101,6 +101,7 @@ export const CreateProjectForm = ({ className }: Props) => {
       </WorkersModal>
 
       <SuggestWithAIModal
+        className="max-h-[65vh] overflow-y-auto"
         open={openSuggestWithAI}
         setOpen={handleOpenSeggestWithAI}
         loading={state.loading}
