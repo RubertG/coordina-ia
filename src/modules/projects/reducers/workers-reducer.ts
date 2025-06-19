@@ -51,5 +51,12 @@ export const workersReducer = (state: WorkersReducerState, action: ActionPayload
     }
   }
 
+  if (action.type === 'SET_RESULT_SUGGESTED') {
+    return {
+      ...state,
+      resultSuggested: action.payload,
+    }
+  }
+
   return state
 }

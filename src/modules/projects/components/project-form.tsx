@@ -19,6 +19,7 @@ import {
   SubmitButton,
   Textarea,
 } from '@/modules/core'
+import Image from 'next/image'
 import { UseFormReturn } from 'react-hook-form'
 
 import { ProjectCreationSchema } from '../types/types'
@@ -28,9 +29,10 @@ interface Props {
   isLoading: boolean
   handlesubmit: (data: ProjectCreationSchema) => Promise<void>
   loadWorkers: () => void
+  suggestWithAI?: () => void
 }
 
-const ProjectForm = ({ form, handlesubmit, isLoading, loadWorkers }: Props) => {
+const ProjectForm = ({ form, handlesubmit, isLoading, loadWorkers, suggestWithAI }: Props) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handlesubmit)} className="space-y-3">
@@ -101,9 +103,17 @@ const ProjectForm = ({ form, handlesubmit, isLoading, loadWorkers }: Props) => {
             textLoading="Guardando proyecto"
             isLoading={isLoading}
           />
-          <Button variant="ghost" type="button" onClick={loadWorkers}>
+
+          <Button variant="outline" type="button" onClick={loadWorkers}>
             Cargar mejores trabajadores
           </Button>
+
+          {suggestWithAI && (
+            <Button variant="outline" type="button" onClick={suggestWithAI}>
+              <Image src="/ia.svg" alt="Imagen que representa la IA" width={15} height={15} />
+              Sugerir con IA
+            </Button>
+          )}
         </footer>
       </form>
     </Form>

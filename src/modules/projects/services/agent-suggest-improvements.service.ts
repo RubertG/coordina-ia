@@ -1,104 +1,104 @@
 'use server'
 
-import { ProjectCreationSchema, Worker, Result } from "../types/types"
-import { analyzeTeam } from "./analyze-team.service"
-import { analyzeTechnologies } from "./analyze-techs.service"
-import { getRecommendedWorkers } from "./recommended-workers.service"
-import { suggestTeam } from "./suggest-team.service"
-import { suggestsTechnologies } from "./suggest-techs.service"
-import { spanishToEnglish } from "./translator.service"
+import { createClientServer } from '@/modules/core'
+import { getWorker } from '@/modules/workers'
+import { PromptTemplate } from '@langchain/core/prompts'
+import { DynamicTool } from '@langchain/core/tools'
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
+import { AgentExecutor, createReactAgent } from 'langchain/agents'
 
-import { AgentExecutor, createReactAgent } from "langchain/agents"
-import { DynamicTool } from "@langchain/core/tools"
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
-import { PromptTemplate } from "@langchain/core/prompts"
-import { createClientServer } from "@/modules/core"
-import { getWorker } from "@/modules/workers"
+import { ProjectCreationSchema, Worker, Result } from '../types/types'
+import { analyzeTeam } from './analyze-team.service'
+import { analyzeTechnologies } from './analyze-techs.service'
+import { getRecommendedWorkers } from './recommended-workers.service'
+import { suggestTeam } from './suggest-team.service'
+import { suggestsTechnologies } from './suggest-techs.service'
+import { spanishToEnglish } from './translator.service'
 
 export async function customAgent(formData: ProjectCreationSchema, workers: string[], team: string[]): Promise<Result> {
-   const supabase = await createClientServer()
+  const supabase = await createClientServer()
 
-   // #TOOLS#
-   const tools = [
-      new DynamicTool({
-         name: 'AnalyzeTechnologies',
-         description: `Checks if the project has appropriate technologies.
+  // #TOOLS#
+  const tools = [
+    new DynamicTool({
+      name: 'AnalyzeTechnologies',
+      description: `Checks if the project has appropriate technologies.
                   Input MUST be a JSON object with the following keys:
                   - "name": string (The name of the project)
                   - "description": string (A detailed description of the project)
                   - "technologies": string (The list of technologies to analyze separated by commas)`,
-         func: async (input: string) => {
-            const { name, description, technologies } = JSON.parse(input)
-            return analyzeTechnologies(name, description, technologies)
-         }
-      }),
-      new DynamicTool({
-         name: 'SuggestTechnologies',
-         description: `Suggests appropriate technologies for the project based on its description.
+      func: async (input: string) => {
+        const { name, description, technologies } = JSON.parse(input)
+        return analyzeTechnologies(name, description, technologies)
+      },
+    }),
+    new DynamicTool({
+      name: 'SuggestTechnologies',
+      description: `Suggests appropriate technologies for the project based on its description.
                   Use this when no technologies are provided or if existing ones need to be re-evaluated.
                   Input MUST be a JSON object with the following keys:
                   - "name": string (The name of the project)
                   - "description": string (A detailed description of the project)`,
-         func: async (input: string) => {
-            const { name, description } = JSON.parse(input)
-            return suggestsTechnologies(name, description)
-         }
-      }),
-      new DynamicTool({
-         name: 'RecommendWorkers',
-         description: `Recommends suitable worker IDs for a project.
+      func: async (input: string) => {
+        const { name, description } = JSON.parse(input)
+        return suggestsTechnologies(name, description)
+      },
+    }),
+    new DynamicTool({
+      name: 'RecommendWorkers',
+      description: `Recommends suitable worker IDs for a project.
                   Use this tool when no worker IDs are available and need to be generated.
                   Input MUST be a JSON object with the following keys:
                   - "name": string (The name of the project)
                   - "description": string (A detailed description of the project)
                   - "technologies": string (The list of technologies required for the project separeted by commas)
                   - "maxWorkers": number (The maximum number of workers to recommend)`,
-         func: async (input: string) => {
-            const { name, description, technologies, maxWorkers } = JSON.parse(input)
-            const formData = {name, description, technologies, maxWorkers}
-            const bestWorkers = await getRecommendedWorkers(formData)
-            const workersId = bestWorkers.data.map(worker => worker.id)
-            return JSON.stringify(workersId)
-         }
-      }),
-      new DynamicTool({
-         name: 'AnalyzeTeam',
-         description: `Checks if a given team (by their IDs) is suitable for the project based on its description and technologies.
+      func: async (input: string) => {
+        const { name, description, technologies, maxWorkers } = JSON.parse(input)
+        const formData = { name, description, technologies, maxWorkers }
+        const bestWorkers = await getRecommendedWorkers(formData)
+        const workersId = bestWorkers.data.map((worker) => worker.id)
+        return JSON.stringify(workersId)
+      },
+    }),
+    new DynamicTool({
+      name: 'AnalyzeTeam',
+      description: `Checks if a given team (by their IDs) is suitable for the project based on its description and technologies.
                   Use this tool when you have existing team IDs and worker IDs.
                   Input MUST be a JSON object with the following keys:
                   - "team": array of strings (The list of IDs that make up the team)
                   - "description": string (A detailed description of the project)
                   - "technologies": string (The list of technologies required for the project separeted by commas)`,
-         func: async (input: string) => {
-            const { team, description, technologies } = JSON.parse(input)
-            return analyzeTeam(team, description, technologies)
-         }
-      }),
-      new DynamicTool({
-         name: 'SuggestTeam',
-         description: `Suggests the optimal team composition (as a list of worker IDs) from a list of available workers.
+      func: async (input: string) => {
+        const { team, description, technologies } = JSON.parse(input)
+        return analyzeTeam(team, description, technologies)
+      },
+    }),
+    new DynamicTool({
+      name: 'SuggestTeam',
+      description: `Suggests the optimal team composition (as a list of worker IDs) from a list of available workers.
                   Use this tool when you have a list of worker IDs but no specific team has been formed yet, or if an existing team needs re-evaluation based on available workers.
                   Input MUST be a JSON object with the following keys:
                   - "workers": array of strings (The list of all available worker IDs to choose from)
                   - "description": string (A detailed description of the project)
                   - "technologies": string (The list of technologies required for the project separeted by commas)
                   - "maxWorkers": number (The maximum desired size for the suggested team)`,
-         func: async (input: string) => {
-            const { workers, description, technologies, maxWorkers } = JSON.parse(input)
-            const team = await suggestTeam(workers, description, technologies, maxWorkers)
-            return JSON.stringify(team);
-         }
-      })
-   ]
+      func: async (input: string) => {
+        const { workers, description, technologies, maxWorkers } = JSON.parse(input)
+        const team = await suggestTeam(workers, description, technologies, maxWorkers)
+        return JSON.stringify(team)
+      },
+    }),
+  ]
 
-   // #AGENT#
-   const llm = new ChatGoogleGenerativeAI({
-      model: 'gemini-2.5-flash',
-      temperature: 0.3,
-      apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
-   })
+  // #AGENT#
+  const llm = new ChatGoogleGenerativeAI({
+    model: 'gemini-2.5-flash',
+    temperature: 0.3,
+    apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+  })
 
-   const promptString = `Answer the following questions as best you can. You have access to the following tools:
+  const promptString = `Answer the following questions as best you can. You have access to the following tools:
 
 {tools}
 
@@ -121,42 +121,41 @@ Let's begin!
 Question: {input}
 Thought:{agent_scratchpad}`
 
-   const prompt = PromptTemplate.fromTemplate(promptString)
-   const agent = await createReactAgent({
-      llm,
-      tools,
-      prompt
-   })
-   const executor = new AgentExecutor({
-      agent,
-      tools,
-      //verbose: true,
-      returnIntermediateSteps: true,
-      handleParsingErrors: true
-   })
+  const prompt = PromptTemplate.fromTemplate(promptString)
+  const agent = await createReactAgent({
+    llm,
+    tools,
+    prompt,
+  })
+  const executor = new AgentExecutor({
+    agent,
+    tools,
+    //verbose: true,
+    returnIntermediateSteps: true,
+    handleParsingErrors: true,
+  })
 
-   
-   // #STRUCTURE OF PROJECT INPUT#
-   const project = await spanishToEnglish(formData)
-   const proyecto: ProjectCreationSchema = {
-      name: project.name,
-      description: project.description,
-      technologies: project.technologies,
-      maxWorkers: formData.maxWorkers
-   }
+  // #STRUCTURE OF PROJECT INPUT#
+  const project = await spanishToEnglish(formData)
+  const proyecto: ProjectCreationSchema = {
+    name: project.name,
+    description: project.description,
+    technologies: project.technologies,
+    maxWorkers: formData.maxWorkers,
+  }
 
-   const inputObject = {
-      name: proyecto.name,
-      description: proyecto.description,
-      technologies: proyecto.technologies,
-      maxWorkers: proyecto.maxWorkers,
-      workers: workers,
-      team: team
-   }
+  const inputObject = {
+    name: proyecto.name,
+    description: proyecto.description,
+    technologies: proyecto.technologies,
+    maxWorkers: proyecto.maxWorkers,
+    workers: workers,
+    team: team,
+  }
 
-   // #CALL THE AGENT#
-   const response = await executor.invoke({
-      input: `You are a project setup assistant. Your goal is to process a project request and determine the optimal technologies, recommend workers, and suggest a team. Follow these steps meticulously:
+  // #CALL THE AGENT#
+  const response = await executor.invoke({
+    input: `You are a project setup assistant. Your goal is to process a project request and determine the optimal technologies, recommend workers, and suggest a team. Follow these steps meticulously:
 
 The project details are:
 ${JSON.stringify(inputObject)}
@@ -225,114 +224,112 @@ ${JSON.stringify(inputObject)}
    **Data Flow:** Ensure the output of one step (e.g., finalized technologies, list of worker IDs) is correctly used as input for subsequent steps.
    **Tool Output:** Pay close attention to the format of the observation from each tool. For example, 'RecommendWorkers' should ideally return a list of worker IDs that can be directly used by 'SuggestTeam' or 'AnalyzeTeam'. If a tool returns data in a complex object, you must extract the necessary information.
    **Error Handling (Implicit):** If a tool fails or provides unexpected output, try to proceed logically based on the workflow (e.g., if 'RecommendWorkers' fails to find workers, you might not be able to form a team). Your final answer should reflect any such issues.`,
-   })
+  })
 
+  // EXTRACT THE RESPONSES#
+  let workersIds: string[] = []
+  let teamIds: string[] = []
+  let teamPoints: string[] = []
+  const result: Result = {
+    technologies: '',
+    workers: [],
+    team: { workers: [], points: [] },
+  }
+  if (response.intermediateSteps && response.intermediateSteps.length > 0) {
+    response.intermediateSteps.forEach((step: any, index: number) => {
+      if (step.action.tool === 'SuggestTechnologies') {
+        result.technologies = step.observation
+      }
+      if (step.action.tool === 'AnalyzeTechnologies' && step.observation === 'OK') {
+        result.technologies = proyecto.technologies
+      }
+      if (step.action.tool === 'AnalyzeTeam' && step.observation === 'OK') {
+        workersIds = workers
+        teamIds = team
+      }
+      if (step.action.tool === 'RecommendWorkers') {
+        workersIds = JSON.parse(step.observation)
+      }
+      if (step.action.tool === 'SuggestTeam') {
+        const aux = JSON.parse(step.observation)
+        teamIds = aux.ids
+        teamPoints = aux.points
+      }
 
-   // EXTRACT THE RESPONSES#
-   let workersIds: string[] = []
-   let teamIds: string[] = []
-   let teamPoints: string[] = []
-   let result: Result = {
-      technologies: '',
-      workers: [],
-      team: { workers: [], points: [] }
-   }
-   if (response.intermediateSteps && response.intermediateSteps.length > 0) {
+      console.log(`--- Step ${index + 1} ---`)
+      console.log(`>> Output from ${step.action.tool}:`, step.observation)
+    })
+  }
 
-      (response.intermediateSteps).forEach((step: any, index: number) => {
-         if (step.action.tool === 'SuggestTechnologies') {
-            result.technologies = step.observation
-         }
-         if ((step.action.tool === 'AnalyzeTechnologies') && (step.observation === 'OK')) {
-            result.technologies = proyecto.technologies
-         }
-         if ((step.action.tool === 'AnalyzeTeam') && (step.observation === 'OK')) {
-            workersIds = workers
-            teamIds = team
-         }
-         if (step.action.tool === 'RecommendWorkers') {
-            workersIds = JSON.parse(step.observation)
-         }
-         if (step.action.tool === 'SuggestTeam') {
-            const aux = JSON.parse(step.observation)
-            teamIds = aux.ids
-            teamPoints = aux.points
-         }
+  // #GET INFO OF WORKERS#
+  workersIds = workersIds.filter((id) => !teamIds.includes(id))
+  const myWorkers = await Promise.all(
+    workersIds.map(async (id) => {
+      return await getWorker(id)
+    }),
+  )
+  const myTeam = await Promise.all(
+    teamIds.map(async (id) => {
+      return await getWorker(id)
+    }),
+  )
 
-         console.log(`--- Step ${index + 1} ---`)
-         console.log(`>> Output from ${step.action.tool}:`, step.observation)
-      })
-   }
+  const finalWorkers = await Promise.all(
+    myWorkers.map(async (worker): Promise<Worker> => {
+      const { data: projects, error: projectsError } = await supabase
+        .from('Proyecto_Trabajador')
+        .select('id_Proyecto')
+        .eq('id_Trabajador', worker.data[0].id)
 
+      if (projectsError || !projects) {
+        return {
+          name: worker.data[0].nombre,
+          id: worker.data[0].id,
+          curriculum: worker.data[0].curriculum,
+          numberOfJobs: 0,
+        }
+      }
 
-   // #GET INFO OF WORKERS#
-   workersIds = workersIds.filter(id => !teamIds.includes(id));
-   const myWorkers = await Promise.all(
-      workersIds.map(async (id) => {
-         return await getWorker(id)
-      })
-   )
-   const myTeam = await Promise.all(
-      teamIds.map(async (id) => {
-         return await getWorker(id)
-      })
-   )
+      return {
+        name: worker.data[0].nombre,
+        id: worker.data[0].id,
+        curriculum: worker.data[0].curriculum,
+        numberOfJobs: projects.length,
+      }
+    }),
+  )
 
+  const finalTeam = await Promise.all(
+    myTeam.map(async (worker): Promise<Worker> => {
+      const { data: projects, error: projectsError } = await supabase
+        .from('Proyecto_Trabajador')
+        .select('id_Proyecto')
+        .eq('id_Trabajador', worker.data[0].id)
 
-   const finalWorkers = await Promise.all(
-      myWorkers.map(async (worker): Promise<Worker> => {
-         const { data: projects, error: projectsError } = await supabase
-            .from('Proyecto_Trabajador')
-            .select('id_Proyecto')
-            .eq('id_Trabajador', worker.data[0].id)
+      if (projectsError || !projects) {
+        return {
+          name: worker.data[0].nombre,
+          id: worker.data[0].id,
+          curriculum: worker.data[0].curriculum,
+          numberOfJobs: 0,
+        }
+      }
 
-         if (projectsError || !projects) {
-            return {
-               name: worker.data[0].nombre,
-               id: worker.data[0].id,
-               curriculum: worker.data[0].curriculum,
-               numberOfJobs: 0
-            }
-         }
+      return {
+        name: worker.data[0].nombre,
+        id: worker.data[0].id,
+        curriculum: worker.data[0].curriculum,
+        numberOfJobs: projects.length,
+      }
+    }),
+  )
 
-         return {
-            name: worker.data[0].nombre,
-            id: worker.data[0].id,
-            curriculum: worker.data[0].curriculum,
-            numberOfJobs: projects.length
-         }
-      })
-   )
+  // #PREPARE THE RESPONSE#
+  result.workers = finalWorkers
+  result.team.workers = finalTeam
+  result.team.points = teamPoints
 
-   const finalTeam = await Promise.all(
-      myTeam.map(async (worker): Promise<Worker> => {
-         const { data: projects, error: projectsError } = await supabase
-            .from('Proyecto_Trabajador')
-            .select('id_Proyecto')
-            .eq('id_Trabajador', worker.data[0].id)
+  console.log('Final result:', result)
 
-         if (projectsError || !projects) {
-            return {
-               name: worker.data[0].nombre,
-               id: worker.data[0].id,
-               curriculum: worker.data[0].curriculum,
-               numberOfJobs: 0
-            }
-         }
-
-         return {
-            name: worker.data[0].nombre,
-            id: worker.data[0].id,
-            curriculum: worker.data[0].curriculum,
-            numberOfJobs: projects.length
-         }
-      })
-   )
-
-   // #PREPARE THE RESPONSE#
-   result.workers = finalWorkers
-   result.team.workers = finalTeam
-   result.team.points = teamPoints
-
-   return result
+  return result
 }

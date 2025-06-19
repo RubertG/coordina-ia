@@ -3,8 +3,8 @@
 import { createClientClient } from '@/modules/core'
 
 import { ProjectCreationSchema, Worker } from '../types/types'
-import { Response } from './projects-worker.service'
 import { cosineSimilarity } from './embedding-search.service'
+import { Response } from './projects-worker.service'
 import { spanishToEnglish } from './translator.service'
 
 /**
@@ -59,7 +59,7 @@ export async function getRecommendedWorkers(formData: ProjectCreationSchema): Pr
           name: worker.nombre,
           id: worker.id,
           curriculum: worker.curriculum,
-          numberOfJobs: 0
+          numberOfJobs: 0,
         }
       }
 
@@ -67,7 +67,7 @@ export async function getRecommendedWorkers(formData: ProjectCreationSchema): Pr
         name: worker.nombre,
         id: worker.id,
         curriculum: worker.curriculum,
-        numberOfJobs: projects.length
+        numberOfJobs: projects.length,
       }
     }),
   )

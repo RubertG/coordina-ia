@@ -1,5 +1,5 @@
-import { GoogleGenAI } from '@google/genai'
 import { createClientClient } from '@/modules/core'
+import { GoogleGenAI } from '@google/genai'
 
 // Despues de guardar un trabajador en la base de datos, se llama para guardar sus embeddings en otra tabla
 export async function embeddingWorker(idWorker: string, cvText: string) {
@@ -10,7 +10,7 @@ export async function embeddingWorker(idWorker: string, cvText: string) {
     embedding: null,
   }
   const supabase = createClientClient()
-  let chunks = chunkCvBySection(cvText)
+  const chunks = chunkCvBySection(cvText)
   const llm = new GoogleGenAI({
     apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
   })
@@ -43,7 +43,7 @@ export async function embeddingWorker(idWorker: string, cvText: string) {
 }
 
 function chunkCvBySection(text: string): string[] {
-  let sections: string[] = []
+  const sections: string[] = []
   let currentSection = ''
 
   const lines = text.split('\n')

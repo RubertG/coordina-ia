@@ -12,7 +12,12 @@ import { englishToSpanish } from './translator.service'
  * @param formData - Datos del formulario de creación de proyecto.
  * @returns Una objeto con las IDs de los mejores trabajadores y los puntos clave.
  */
-export async function suggestTeam(idsWorkers: string[], descriptionP: string, technologiesP: string, cantidadP: string) {
+export async function suggestTeam(
+  idsWorkers: string[],
+  descriptionP: string,
+  technologiesP: string,
+  cantidadP: string,
+) {
   const llm = new ChatGoogleGenerativeAI({
     model: 'gemini-2.5-flash',
     temperature: 0,
@@ -41,19 +46,19 @@ export async function suggestTeam(idsWorkers: string[], descriptionP: string, te
   const workers = await Promise.all(
     idsWorkers.map(async (id) => {
       return await getWorker(id)
-    })
+    }),
   )
 
-  let rawData = await chain.invoke({
+  const rawData = await chain.invoke({
     techs: technologiesP,
     workers: workers,
     desc: descriptionP,
-    cant: cantidadP
+    cant: cantidadP,
   })
-  let translated = await englishToSpanish(rawData)
+  const translated = await englishToSpanish(rawData)
 
   return {
     ids: translated.id,
-    points: translated.points
+    points: translated.points,
   }
 }

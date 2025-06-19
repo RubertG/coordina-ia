@@ -9,11 +9,9 @@
 
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/modules/core'
 import clsx from 'clsx'
-import { Info, Minus, Plus } from 'lucide-react'
-import { useState } from 'react'
+import { Minus, Plus } from 'lucide-react'
 
 import { Worker } from '../types/types'
-import { WorkerKeyPointsModal } from './worker-key-points-modal'
 
 interface Props {
   className?: string
@@ -23,8 +21,6 @@ interface Props {
 }
 
 export const WorkerItem = ({ className, worker, onClick, isSelected }: Props) => {
-  const [open, setOpen] = useState(false)
-
   return (
     <li
       className={clsx(
@@ -52,22 +48,7 @@ export const WorkerItem = ({ className, worker, onClick, isSelected }: Props) =>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button size="icon" variant="ghost" onClick={() => setOpen(true)}>
-                <Info />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Puntos clave</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
       </div>
-
-      <WorkerKeyPointsModal open={open} setOpen={setOpen} worker={worker} />
     </li>
   )
 }

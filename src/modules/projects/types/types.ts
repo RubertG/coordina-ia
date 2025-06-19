@@ -24,9 +24,9 @@ export interface Team {
 }
 
 export interface Result {
-  technologies: string;
-  workers: Worker[];
-  team: Team;
+  technologies: string
+  workers: Worker[]
+  team: Team
 }
 
 /**
@@ -37,6 +37,7 @@ export interface WorkersReducerState {
   loading: boolean
   error: string
   selectedWorkers: Worker[]
+  resultSuggested: Result | null
 }
 
 /**
@@ -49,3 +50,4 @@ export type ActionPayloadWorkersReducer =
   | { type: 'SET_WORKERS'; payload: Worker[] }
   | { type: 'SELECT_WORKER'; payload: Worker }
   | { type: 'UNSELECTED_WORKER'; payload: Worker }
+  | { type: 'SET_RESULT_SUGGESTED'; payload: Result }

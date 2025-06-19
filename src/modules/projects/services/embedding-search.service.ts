@@ -1,5 +1,5 @@
-import { GoogleGenAI } from '@google/genai'
 import { createClientClient } from '@/modules/core'
+import { GoogleGenAI } from '@google/genai'
 
 export async function cosineSimilarity(project: Record<string, any>, cant: string) {
   const supabase = createClientClient()

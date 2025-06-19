@@ -1,6 +1,6 @@
+import { JsonOutputParser } from '@langchain/core/output_parsers'
 import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
-import { JsonOutputParser } from '@langchain/core/output_parsers'
 
 import { ProjectCreationSchema } from '../types/types'
 
@@ -25,7 +25,7 @@ export async function englishToSpanish(points: Record<string, any>) {
   const parser = new JsonOutputParser()
   const chain = chatTemplate.pipe(llm).pipe(parser)
 
-  let result = await chain.invoke({
+  const result = await chain.invoke({
     list: points,
   })
 
@@ -58,7 +58,7 @@ export async function spanishToEnglish({ name, description, technologies }: Proj
   const parser = new JsonOutputParser()
   const chain = chatTemplate.pipe(llm).pipe(parser)
 
-  let result = await chain.invoke({
+  const result = await chain.invoke({
     nameP: name,
     descP: description,
     techsP: technologies,

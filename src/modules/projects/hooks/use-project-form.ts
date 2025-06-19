@@ -15,6 +15,7 @@ import { toast } from 'sonner'
 
 import { workersReducer } from '../reducers/workers-reducer'
 import { createProjectSchema } from '../schemas/create-project.schema'
+import { customAgent } from '../services/agent-suggest-improvements.service'
 import { createProject } from '../services/projects.service'
 import { getRecommendedWorkers } from '../services/recommended-workers.service'
 import { ProjectCreationSchema, Worker, WorkersReducerState } from '../types/types'
@@ -31,7 +32,8 @@ export const useProjectForm = ({ workersInitialState }: Props) => {
     maxWorkers: '0',
     technologies: '',
   })
-  const [open, setOpen] = useState(false)
+  const [openWorkersModal, setWorkersModal] = useState(false)
+  const [openSuggestWithAI, setSuggestWithAI] = useState(false)
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -85,19 +87,23 @@ export const useProjectForm = ({ workersInitialState }: Props) => {
     dispatch({ type: 'SELECT_WORKER', payload: worker })
   }
 
-  const handleOpenModal = () => {
-    setOpen(!open)
+  const handleOpenWorkersModal = () => {
+    setWorkersModal(!openWorkersModal)
+  }
+
+  const handleOpenSeggestWithAI = () => {
+    setSuggestWithAI(!openSuggestWithAI)
   }
 
   const handleLoadWorkers = async () => {
     await form.handleSubmit(async (formData) => {
       if (JSON.stringify(prevForm) === JSON.stringify(formData)) {
-        handleOpenModal()
+        handleOpenWorkersModal()
         return
       }
 
       setPrevForm(formData)
-      handleOpenModal()
+      handleOpenWorkersModal()
       dispatch({ type: 'SET_LOADING', payload: true })
 
       const { data, error } = await getRecommendedWorkers(formData)
@@ -114,15 +120,58 @@ export const useProjectForm = ({ workersInitialState }: Props) => {
     })()
   }
 
+  const handleSuggestWithAI = async () => {
+    await form.handleSubmit(async (formData) => {
+      if (JSON.stringify(prevForm) === JSON.stringify(formData) && state.resultSuggested) {
+        console.log({
+          prevForm,
+          formData,
+          stateResult: state.resultSuggested,
+        })
+        handleOpenSeggestWithAI()
+
+        return
+      }
+
+      setPrevForm(formData)
+      handleOpenSeggestWithAI()
+      dispatch({ type: 'SET_LOADING', payload: true })
+
+      const workers = state.selectedWorkers.map((worker) => worker.id)
+      const team = state.selectedWorkers.map((worker) => worker.id)
+      const res = await customAgent(formData, workers, team)
+      console.log({
+        workers,
+        team,
+        res,
+      })
+
+      dispatch({ type: 'SET_RESULT_SUGGESTED', payload: res })
+      dispatch({ type: 'SET_LOADING', payload: false })
+    })()
+  }
+
+  const onAccept = () => {
+    // los valores de RESULT_SUGGESTED colocarlos en el formulario
+    if (!state.resultSuggested) return
+
+    const { technologies } = state.resultSuggested
+    technologies && form.setValue('technologies', technologies)
+  }
+
   return {
     form,
     handlesubmit,
     isLoading,
     isSelected,
     handleSelectWorker,
-    handleOpenModal,
+    handleOpenWorkersModal,
     handleLoadWorkers,
     state,
-    open,
+    openWorkersModal,
+    handleSuggestWithAI,
+    openSuggestWithAI,
+    handleOpenSeggestWithAI,
+    onAccept,
   }
 }

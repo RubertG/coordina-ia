@@ -1,14 +1,14 @@
-import { getWorker } from "@/modules/workers"
-import { StringOutputParser } from "@langchain/core/output_parsers"
-import { ChatPromptTemplate } from "@langchain/core/prompts"
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
+import { getWorker } from '@/modules/workers'
+import { StringOutputParser } from '@langchain/core/output_parsers'
+import { ChatPromptTemplate } from '@langchain/core/prompts'
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
 
 export async function analyzeTeam(idsWorkers: string[], descriptionP: string, technologiesP: string) {
-   const llm = new ChatGoogleGenerativeAI({
-      model: 'gemini-2.0-flash',
-      temperature: 0,
-      apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
-   })
+  const llm = new ChatGoogleGenerativeAI({
+    model: 'gemini-2.0-flash',
+    temperature: 0,
+    apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+  })
 
   const systemTemplate = `VERY IMPORTANT: Your response should be 'OK.' or 'I must suggest alternative workers for the project.'.
   
@@ -21,9 +21,9 @@ export async function analyzeTeam(idsWorkers: string[], descriptionP: string, te
   - If they are not suitable, respond with 'I must suggest alternative workers for the project.'`
 
   const chatTemplate = ChatPromptTemplate.fromMessages([
-      ['system', systemTemplate],
-      ['user', humanTemplate]
-   ])
+    ['system', systemTemplate],
+    ['user', humanTemplate],
+  ])
 
   const parser = new StringOutputParser()
   const chain = chatTemplate.pipe(llm).pipe(parser)
@@ -31,14 +31,14 @@ export async function analyzeTeam(idsWorkers: string[], descriptionP: string, te
   const workers = await Promise.all(
     idsWorkers.map(async (id) => {
       return await getWorker(id)
-    })
+    }),
   )
 
-   const result = await chain.invoke({
-      workers: workers,
-      desc: descriptionP,
-      techs: technologiesP
-   })
-   
-   return result
+  const result = await chain.invoke({
+    workers: workers,
+    desc: descriptionP,
+    techs: technologiesP,
+  })
+
+  return result
 }
