@@ -262,17 +262,12 @@ ${JSON.stringify(inputObject)}
   }
 
   // #GET INFO OF WORKERS#
-  workersIds = workersIds.filter((id) => !teamIds.includes(id))
   const myWorkers = await Promise.all(
     workersIds.map(async (id) => {
       return await getWorker(id)
     }),
   )
-  const myTeam = await Promise.all(
-    teamIds.map(async (id) => {
-      return await getWorker(id)
-    }),
-  )
+  const myTeam = myWorkers.filter((worker) => teamIds.includes(worker.data[0].id))
 
   const finalWorkers = await Promise.all(
     myWorkers.map(async (worker): Promise<Worker> => {
@@ -328,8 +323,6 @@ ${JSON.stringify(inputObject)}
   result.workers = finalWorkers
   result.team.workers = finalTeam
   result.team.points = teamPoints
-
-  console.log('Final result:', result)
 
   return result
 }

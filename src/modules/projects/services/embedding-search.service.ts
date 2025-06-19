@@ -27,7 +27,7 @@ export async function cosineSimilarity(project: Record<string, any>, cant: strin
   const { data, error } = await supabase.rpc('match_documents', {
     query_embedding: embeddingPrompt || '',
     match_threshold: 0.4,
-    match_count: Math.ceil(Number(cant) * 2.5),
+    match_count: Math.ceil(Number(cant) * 3),
   })
 
   return data
