@@ -9,7 +9,6 @@
 
 import { Card, CardContent, CardHeader } from '@/modules/core'
 import { ProjectForm, WorkerItem, WorkersReducerState } from '@/modules/projects'
-import clsx from 'clsx'
 
 import { useProjectForm } from '../hooks/use-project-form'
 import { SuggestWithAIModal } from './suggest-with-ai-modal'
