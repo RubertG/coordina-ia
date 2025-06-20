@@ -14,8 +14,8 @@ export async function suggestsTechnologies(nameP: string, descriptionP: string) 
   Do not include any additional text, explanations, or formatting. Act as an expert in the suggestion of technologies and frameworks for a software development project.
   You will recieve a name and a description of a project`
 
-  const humanTemplate = `According to the following name: {name} and description: {desc}. Provide the best technologies and frameworks that fits for the project described.
-  The response must be less than 10 technologies and frameworks.`
+  const humanTemplate = `According to the following name: {name} and description: {desc}. Identify the most suitable technologies and frameworks for building this system, considering factors such as: system complexity, performance requirements, real-time capabilities, scalability, data processing, user interface, and integration needs.
+  Only recommend up to 10 technologies/frameworks, including backend, frontend, database, infrastructure, and any relevant tools or libraries specific to the domain.`
 
   const chatTemplate = ChatPromptTemplate.fromMessages([
     ['system', systemTemplate],
