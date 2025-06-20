@@ -325,6 +325,5 @@ ${JSON.stringify(inputObject)}
   result.team.workers = finalTeam
   result.team.points = teamPoints
 
-  console.log(result)
   return result
 }

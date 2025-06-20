@@ -5,7 +5,7 @@ import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
 
 export async function analyzeTeam(idsWorkers: string[], descriptionP: string, technologiesP: string) {
   const llm = new ChatGoogleGenerativeAI({
-    model: 'gemini-2.0-flash',
+    model: 'gemini-2.5-flash-lite-preview-06-17',
     temperature: 0,
     apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
   })
