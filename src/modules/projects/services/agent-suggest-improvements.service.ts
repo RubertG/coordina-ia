@@ -238,12 +238,13 @@ ${JSON.stringify(inputObject)}
   if (response.intermediateSteps && response.intermediateSteps.length > 0) {
     response.intermediateSteps.forEach((step: any, index: number) => {
       if (step.action.tool === 'SuggestTechnologies') {
-        result.technologies = step.observation
+        result.technologies = step.observation.trim()
       }
-      if (step.action.tool === 'AnalyzeTechnologies' && step.observation === 'OK') {
-        result.technologies = proyecto.technologies
+      if (step.action.tool === 'AnalyzeTechnologies' && step.observation.trim() === 'OK.') {
+        result.technologies = proyecto.technologies.trim()
+        workersIds = workers
       }
-      if (step.action.tool === 'AnalyzeTeam' && step.observation === 'OK') {
+      if (step.action.tool === 'AnalyzeTeam' && step.observation.trim() === 'OK.') {
         workersIds = workers
         teamIds = team
       }
@@ -324,5 +325,6 @@ ${JSON.stringify(inputObject)}
   result.team.workers = finalTeam
   result.team.points = teamPoints
 
+  console.log(result)
   return result
 }
