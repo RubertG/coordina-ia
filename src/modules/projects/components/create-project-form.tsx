@@ -101,7 +101,7 @@ export const CreateProjectForm = ({ className }: Props) => {
       </WorkersModal>
 
       <SuggestWithAIModal
-        className="max-h-[65vh] overflow-y-auto"
+        className="max-h-[65vh] overflow-y-auto pr-1"
         open={openSuggestWithAI}
         setOpen={handleOpenSeggestWithAI}
         loading={state.loading}
@@ -114,18 +114,18 @@ export const CreateProjectForm = ({ className }: Props) => {
       >
         {state.resultSuggested?.technologies && (
           <>
-            <h2>Tecnologías sugeridas</h2>
+            <h3 className="font-medium">Tecnologías sugeridas</h3>
             <p className="text-sm text-zinc-700">{state.resultSuggested.technologies}</p>
           </>
         )}
 
         {state.resultSuggested?.team?.workers?.length !== 0 && (
           <>
-            <h2 className="mt-2">Equipo sugerido</h2>
+            <h3 className="mt-4 font-medium">Equipo sugerido</h3>
 
             <p className="text-sm text-zinc-700">Los puntos clave de los trabajadores sugeridos son los siguientes:</p>
 
-            <ul>
+            <ul className="mt-2">
               {state.resultSuggested?.team?.points?.map((point, index) => (
                 <li key={index} className="ml-4 list-disc text-sm text-zinc-700">
                   {point}
@@ -134,10 +134,10 @@ export const CreateProjectForm = ({ className }: Props) => {
             </ul>
 
             <p className="mt-2 text-sm text-zinc-700">
-              La lista de trabajadores sugeridos para el equipo es la siguiente:
+              La lista de <strong>trabajadores recomendados</strong> para el equipo es la siguiente:
             </p>
 
-            <ul className="mt-2 grid max-h-72 overflow-y-auto overflow-x-hidden rounded-lg">
+            <ul className="mt-2 grid max-h-72 overflow-y-auto overflow-x-hidden rounded-lg bg-gray-50">
               {state.resultSuggested?.team?.workers?.map((worker) => (
                 <WorkerItem
                   key={worker.id}
@@ -152,8 +152,8 @@ export const CreateProjectForm = ({ className }: Props) => {
 
         {state.resultSuggested?.workers?.length !== 0 && (
           <>
-            <h2 className="mt-2">Trabajadores recomendados</h2>
-            <ul className="mt-2 grid max-h-72 overflow-y-auto overflow-x-hidden rounded-lg">
+            <h3 className="mt-4 font-medium">Trabajadores que cumplen con los requisitos</h3>
+            <ul className="mt-2 grid max-h-72 overflow-y-auto overflow-x-hidden rounded-lg bg-gray-50">
               {state.resultSuggested?.workers?.map((worker) => (
                 <WorkerItem
                   key={worker.id}

@@ -137,7 +137,7 @@ export const useProjectForm = ({ workersInitialState }: Props) => {
       handleOpenSeggestWithAI()
       dispatch({ type: 'SET_LOADING', payload: true })
 
-      const workers = state.selectedWorkers.map((worker) => worker.id)
+      const workers = state.workers.map((worker) => worker.id)
       const team = state.selectedWorkers.map((worker) => worker.id)
       const res = await customAgent(formData, workers, team)
       console.log({

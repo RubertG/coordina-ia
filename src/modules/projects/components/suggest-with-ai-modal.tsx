@@ -43,7 +43,7 @@ const SuggestWithAIModal = ({
 }: Props) => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogContent>
+      <AlertDialogContent className="!max-w-3xl">
         <AlertDialogHeader>
           <AlertDialogTitle>Sugerencias</AlertDialogTitle>
           <AlertDialogDescription>
