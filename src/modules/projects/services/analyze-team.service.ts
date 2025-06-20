@@ -16,6 +16,7 @@ export async function analyzeTeam(idsWorkers: string[], descriptionP: string, te
   You will receive a data structure that has employee information such as id, curriculum and name.`
 
   const humanTemplate = `According to the following workers: {workers}. Evaluate whether their backgrounds align well with the project described as: {desc}.
+  Consider if the collective skill set are SUFICIENT to handle the entire project scope. And evaluate if there are any critical roles or skill areas missing that are essential for a successful project of this nature.
   For the selected group, focus on the collective strengths they bring to the project as a team.
   - If the workers are suitable, respond with 'OK.'
   - If they are not suitable, respond with 'I must suggest alternative workers for the project.'`
